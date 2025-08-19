@@ -69,6 +69,23 @@
 					  </nav>
 					  
 				<!-- Main -->
+				<style>
+  /* Left-align the Massively intro */
+  #intro { 
+    text-align: left;             /* text alignment */
+    align-items: flex-start;       /* flex cross-axis (horizontal) */
+    justify-content: center;       /* keep it vertically centered */
+    padding-left: 2rem;            /* nudge off the edge */
+  }
+  #intro .actions { 
+    justify-content: flex-start;   /* move the button left too */
+  }
+  /* Optional: make it a bit wider on desktop */
+  @media (min-width: 980px){
+    #intro { padding-left: 4rem; }
+  }
+</style>
+
 					<div id="main">
 
   
@@ -231,4 +248,5 @@
 			<script src="assets/js/main.js"></script>
 
 	</body>
+
 </html>
