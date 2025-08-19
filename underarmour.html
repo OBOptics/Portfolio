@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Under Armour Purchase vs Age</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+  </head>
+  <body>
+    <div id="wrapper">
+      <header id="header">
+        <a href="index.html" class="logo">OBI</a>
+      </header>
+
+      <div id="main">
+        <section>
+          <h2>Under Armour Purchase vs Age</h2>
+          <p><strong>Objective:</strong> Modeled how customer age relates to Under Armour purchase likelihood, comparing a Linear Probability Model (LPM) to Logistic Regression and validating with a simple holdout.</p>
+          <img src="images/UnderArmour_logo.png" alt="Dashboard Screenshot"  style="display:block;margin:0 auto;max-width:100%;height:auto;"/>
+          <p><strong>Tools:</strong> R(readxl, dplyr), Excel</p>
+                                                   
+
+
+
+
+
+        <div class="project-snapshot">
+            <h3>Project Snapshot</h3>
+            <ul>
+                <p><strong>Summary: </strong>I modeled how Age relates to Under Armour (UA) purchase likelihood using a Linear Probability Model (LPM) and Logistic Regression, then compared out‑of‑sample performance with a simple holdout split. The analysis quantifies Annabel’s hypothesis that UA skews younger and turns model outputs into clear actions.</p>
+                <h3>Case & Business Question</h3>
+
+                <p><strong>Brand context:</strong> Under Armour pioneered compression gear. Annabel believes UA resonates with younger customers than Nike/Adidas.</p>
+                <p><strong>Business question:</strong> How does the probability of purchasing UA change with age? If younger customers are more likely to purchase, how large is that effect, and which model better predicts purchases?</p>
+                <h3>Data Summary</h3>
+                <div>
+                    <p style="margin:0"><strong>Rows:</strong> 30 customers (class exercise)</p>
+                  
+                    <p style="margin:0"><strong>Fields:</strong></p>
+                    <ul style="margin:0; padding-left:1.2em">
+                      <li style="margin:0"><strong>Age</strong> — numeric, years</li>
+                      <li style="margin:0"><strong>Purchase</strong> — binary (1 = purchased UA, 0 = no purchase)</li>
+                    </ul>
+                  
+                    <p style="margin:0"><strong>Target:</strong> Purchase</p>
+                    <p style="margin:0"><strong>Feature:</strong> Age</p>
+                    <p style="margin:0">
+                      <strong>Data hygiene:</strong> Verified Purchase is coded 0/1, no missing values in predictors,
+                      ordered split (first 20 = train, last 10 = validation) per instructions.
+                    </p>
+                  </div>
+                 
+                <figure style="max-width:900px;margin:32px auto;text-align:center;">
+                    <img
+                      src="images/ua_prob_vs_age.png"
+                      alt="Under Armour Purchase vs Age: LPM line, logistic curve, and individual outcomes"
+                      style="display:block;margin:0 auto;max-width:50%;height:auto;"
+                    />
+                    <figcaption style="margin-top:24px;color:#444;line-height:1.45;font-size:0.95rem;">
+                      This chart shows how Under Armour purchase likelihood falls as customers get older.
+                      Each ✕ marks an individual outcome (1 = purchased, 0 = not). The orange straight line
+                      is the <strong>Linear Probability Model</strong> and the red curve is <strong>Logistic Regression</strong>;
+                      both slope downward, indicating a negative age effect. At <strong>age 20</strong>, the models estimate a
+                      <strong>~45–47%</strong> chance of purchase; by <strong>age 30</strong>, that drops to <strong>~21–25%</strong>, and it trends toward
+                      zero by the early 40s. The logistic curve stays within [0,1] and captures the taper more
+                      realistically, which aligns with its slightly better calibration (lower Brier) in validation.
+                    </figcaption>
+                  </figure>
+                  <div style="height:10px;"></div>
+                  <figure style="max-width:900px;margin:32px auto;text-align:center;">
+                    <img
+                      src="images/ua_validation_metrics.png"
+                      alt="Validation metrics: Accuracy and Brier for LPM vs Logistic (n=10)"
+                      style="display:block;margin:0 auto;max-width:50%;height:auto;"
+                    />
+                    <figcaption style="margin-top:8px;color:#444;line-height:1.45;font-size:0.95rem;">
+                      Validation results on the 10-row holdout show both models at <strong>90% accuracy</strong>.
+                      The logistic model is slightly better calibrated with a <strong>lower Brier score (0.085 vs 0.086)</strong>.
+                      With a small validation set, performance is statistically similar; however, logistic remains preferable
+                      for probability predictions because it stays within [0,1] and typically calibrates better.
+                    </figcaption>
+                  </figure>
+                  <figure style="max-width:900px;margin:24px auto;text-align:center;">
+                    <img
+                      src="images/Methods_UA.png"
+                      alt="Methods & Rationale: LPM vs Logistic, 20/10 holdout, 0.50 threshold, Brier score, decision rules"
+                      style="display:block;margin:0 auto;max-width:50%;height:auto;"
+                    />
+                    <figcaption style="margin-top:32px;color:#444;line-height:1.45;font-size:0.95rem;">
+                      <strong>Methods &amp; Rationale.</strong> I compared a baseline <strong>Linear Probability Model</strong>
+                      (P = β₀ + β₁·Age) with <strong>Logistic Regression</strong> (logit(P) = β₀ + β₁·Age). Validation followed the
+                      assignment’s ordered split (<strong>20 train / 10 validation</strong>), using a <strong>0.50</strong> classification
+                      threshold and reporting <strong>Brier score</strong> for calibration. Decision rules: prefer the model with
+                      <strong>higher accuracy</strong> and <strong>lower Brier</strong>; if LPM predicts outside [0,1], favor Logistic for deployment.
+                    </figcaption>
+                  </figure>
+                  <figure style="max-width:900px;margin:32px auto;text-align:center;">
+                    <img
+                      src="images/ua_results_summary.png"
+                      alt="Results Summary — Under Armour vs Age (predicted probabilities and validation metrics)"
+                      style="display:block;margin:0 auto;max-width:100%;height:auto;"
+                    />
+                    <figcaption style="margin-top:2px;color:#444;line-height:1.55;font-size:0.95rem;text-align:left;">
+                      Predicted probabilities decline with age: <strong>LPM</strong> p(20)=<strong>0.446</strong>,
+                      p(30)=<strong>0.254</strong>; <strong>Logistic</strong> p(20)=<strong>0.468</strong>, p(30)=<strong>0.208</strong>.
+                      On validation (n=10) both models reached <strong>0.900 accuracy</strong>, with Logistic slightly better
+                      calibrated (Brier <strong>0.085</strong> vs <strong>0.086</strong>).
+                  
+                      
+                      
+                      <div style="height:10px;"></div>
+                      <strong>Conclusion:</strong> The evidence supports Annabel’s hypothesis: younger customers are
+                      meaningfully more likely to buy Under Armour. For production use, deploy the
+                      <strong>logistic model</strong> because it produces well-behaved probabilities in [0,1] and shows
+                      slightly better calibration. Use these scores for audience targeting (e.g., prioritize
+                      outreach for customers with p ≥ 0.60), and track lift by age bands (e.g., 18–24 vs 25–34).
+                      As next steps, validate on a larger sample with cross-validation, add additional predictors
+                      (sport category, training frequency), and monitor model performance over time to guard
+                      against drift.
+                    </figcaption>
+                  </figure>
+                  
+ 
+ 
+ 

@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>DETE Exit Survey — Drivers of Turnover (Interactive + Analysis)</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    .badge{display:inline-block;padding:.25rem .6rem;border-radius:999px;background:#f2f2f2;margin:.15rem .15rem 0 0}
+    .tight li{margin:.25rem 0}
+    .fig{margin:1.25rem 0;text-align:center}
+    .fig img{max-width:100%;height:auto;display:block;margin:0 auto}
+    .fig small{color:#666;display:block;margin-top:.35rem}
+    .viz-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:1.25rem;align-items:start}
+    @media (max-width: 980px){ .viz-grid{grid-template-columns:1fr} }
+    /* Responsive Tableau container */
+    .tableau-wrap{position:relative;width:100%;padding-top:65%}
+    .tableau-wrap iframe{position:absolute;inset:0;width:100%;height:100%}
+  </style>
+</head>
+<body>
+  <div id="wrapper">
+
+    <header id="header">
+      <a href="index.html" class="logo">OBI</a>
+    </header>
+
+    <div id="main">
+      <section>
+        <h2>DETE Exit Survey — Drivers of Turnover</h2>
+        <p>
+          <strong>Objective:</strong> Understand who is leaving, why, and how tenure and demographics differ across separation types—so HR can target retention and transition programs.
+        </p>
+        <p>
+          <span class="badge">Tools: Tableau Public, Excel</span>
+          <span class="badge">Data: 805 exits • Separation type • Tenure • Age • Dissatisfaction</span>
+        </p>
+
+        <!-- Executive Summary with integrated visual -->
+        <div class="viz-grid">
+          <div>
+            <h3>Executive Summary</h3>
+            <ul class="tight">
+              <li><strong>Volume mix:</strong> Retirement (<strong>347</strong>) and Resignation (<strong>305</strong>) account for most exits.</li>
+              <li><strong>Tenure:</strong> Median time served at exit is about <strong>5 years</strong>.</li>
+              <li><strong>Dissatisfaction:</strong> Overall ~<strong>11%</strong>, highest for <strong>Termination (~20%)</strong> and <strong>Resignation (~13%)</strong>.</li>
+              <li><strong>Age pattern:</strong> Resignations skew younger vs. retirements, which cluster 50+.</li>
+            </ul>
+          </div>
+          <figure class="fig">
+            <img src="images/dete_separation_types.png" alt="Separation types (bar)">
+            <small><strong>Separation mix.</strong> Retirement and Resignation dominate overall exits.</small>
+          </figure>
+        </div>
+
+        <!-- Data Overview with integrated tenure visual -->
+        <h3>Data Overview</h3>
+        <div class="viz-grid">
+          <div>
+            <ul class="tight">
+              <li><strong>Records:</strong> 805 exits (DETE survey).</li>
+              <li><strong>Fields:</strong> SeparationType, Years Employed, Age, Dissatisfaction indicator, plus demographics.</li>
+              <li><strong>Quality:</strong> Cleaned headers; tenure parsed into numeric years; age banded for readability.</li>
+            </ul>
+          </div>
+          <figure class="fig">
+            <img src="images/dete_tenure_hist.png" alt="Tenure distribution">
+            <small><strong>Tenure at exit.</strong> Centered around 5 years with a long right tail.</small>
+          </figure>
+        </div>
+
+        <!-- Embedded Tableau -->
+        <h3>Interactive Dashboard</h3>
+        <div class="tableau-wrap">
+          <iframe
+            src="https://public.tableau.com/views/DETEExitSurveyDashboard/DETEDashboard?:showVizHome=no&:embed=y&:display_count=n"
+            frameborder="0" allowfullscreen title="DETE Exit Survey Dashboard">
+          </iframe>
+        </div>
+        <p style="text-align:center;margin-top:.5rem;">
+          <a href="https://public.tableau.com/app/profile/annetta.oleru/viz/DETEExitSurveyDashboard/DETEDashboard"
+             target="_blank" rel="noopener">Open on Tableau Public</a>
+        </p>
+
+        <!-- Insights with integrated visuals -->
+        <h3>Insights & Actions</h3>
+        <ul class="tight">
+          <li><strong>Target resignation hotspots.</strong> With dissatisfaction higher in <em>Resignation</em>, pulse-check workloads/leadership where recent resignations concentrate.</li>
+          <li><strong>Retirement pipeline.</strong> Retirements are predictable; plan backfills and knowledge-transfer for roles with 50–59 and 60+ clusters.</li>
+          <li><strong>Tenure & onboarding.</strong> If early-career exits rise (e.g., &lt;3 years), strengthen onboarding, career pathing, and manager training.</li>
+        </ul>
+
+        <figure class="fig">
+          <img src="images/dete_dissatisfaction_by_sep.png" alt="Dissatisfaction rate by separation category">
+          <small><strong>Dissatisfaction by separation.</strong> Highest in Termination and Resignation groups.</small>
+        </figure>
+
+        <figure class="fig">
+          <img src="images/dete_age_by_separation.png" alt="Age distribution by separation category (stacked)">
+          <small><strong>Age × separation.</strong> Retirements skew 50–59 and 60+; resignations show more &lt;30 and 30–39.</small>
+        </figure>
+
+      </section>
+    </div>
+
+    <footer id="footer">
+      <section class="split contact">
+        <section class="alt"><h3>Location</h3><p>Fort Worth, TX</p></section>
+        <section><h3>Email</h3><p><a href="mailto:optimalbusinessinsights@gmail.com">optimalbusinessinsights@gmail.com</a></p></section>
+        <section><h3>GitHub</h3><p><a href="https://github.com/OBOptics">OBOptics</a></p></section>
+      </section>
+    </footer>
+
+    <div id="copyright">
+      <ul><li>&copy; OBI</li><li>Theme: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+    </div>
+  </div>
+
+  <!-- Theme scripts -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/jquery.scrolly.min.js"></script>
+  <script src="assets/js/browser.min.js"></script>
+  <script src="assets/js/breakpoints.min.js"></script>
+  <script src="assets/js/util.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

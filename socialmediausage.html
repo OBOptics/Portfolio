@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Social Media Usage Analysis</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+  </head>
+  <body>
+    <div id="wrapper">
+      <header id="header">
+        <a href="index.html" class="logo">OBI</a>
+      </header>
+
+      <div id="main">
+        <section>
+          <h2>Discovering Social Media App Co‑Usage Patterns</h2>
+          <p><strong>Objective:</strong> Identify which popular social media apps are frequently used together by the same users using association rule mining.</p>
+          <img src="images/SocialMediaUsage.png" alt="Dashboard Screenshot" style="max-width:100%;"/>
+          <p><strong>Tools:</strong> R(readxl, dplyr), Excel</p>
+                                                   
+
+
+
+
+
+        <div class="project-snapshot">
+            <h3>Project Snapshot</h3>
+            <ul>
+                <p><strong>Data:</strong> 100 respondents; columns are binary app‑usage indicators. User ID excluded.</p>
+                <p><strong>Method:</strong> Association rules with thresholds support ≥ 20% and confidence ≥ 60%; ranked by lift.</p>
+<p><strong>What I Did:</strong></p>
+<p>
+               <li>Cleaned the dataset and converted 1/0 indicators to logical values.</li>
+               <img src="images/socialmedia_cleaning.png" alt="Dashboard Screenshot" style="max-width:50%;" />
+                <li>Enumerated frequent itemsets and generated rules without relying on heavy packages, keeping the logic transparent.</li>
+                <img src="images/socialmedia_code.png" alt="Dashboard Screenshot" style="max-width:50%;" />
+                <li>Calculated support, confidence, and lift for each rule.</li>
+            </ul>
+        </div>
+
+        <img src="images/top_rules.png" alt="Dashboard Screenshot" style="max-width:50%;" />
+        <img src="images/Rules.SocialMediaUsage.png" alt="Dashboard Screenshot" style="max-width:50%;" />
+        <li>Interpreted results to identify actionable insights.</li>
+                <p><strong>Result Highlights:</strong></p>
+                    <ul>
+                        <li>8 rules met the thresholds.</li>
+                        <li>Top rule: {Snapchat} ⇒ {Instagram}</li>
+                        <li>Support: 0.30 (30 users)</li>
+                        <li>Confidence: 0.638 (63.8% of Snapchat users also use Instagram)</li>
+                        <li>Lift: 1.277 (+27.7% more likely than baseline)</li>
+                    </ul>
+                </li>
+            <p><strong>Impact:</strong> Useful for cross‑promotion, bundled campaigns, and partnership targeting between apps with overlapping audiences.</p>
+            </ul>
+        </div>
+          
+          
+                    <li><strong>So what:</strong> Useful for cross‑promotion, bundled campaigns, and partnership targeting between apps with overlapping audiences.</li>
+          
+          
