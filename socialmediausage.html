@@ -1,60 +1,261 @@
 <!DOCTYPE HTML>
 <html>
-  <head>
-    <title>Social Media Usage Analysis</title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="assets/css/main.css" />
-  </head>
-  <body>
-    <div id="wrapper">
-      <header id="header">
-        <a href="index.html" class="logo">OBI</a>
-      </header>
+<head>
+  <title>Social Media App Co-Usage — Tutorial & Findings</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    /* Blog-style layout (same pattern as your NYC post) */
+    .post-hero{margin:0 0 1rem}
+    .post-hero img{display:block;max-width:100%;height:auto;border-radius:8px}
+    .byline{font-size:.95rem;color:#777;margin:.25rem 0 .35rem}
+    .byline strong{color:#111}
+    .updated{font-size:.9rem;color:#666;margin-bottom:1rem}
+    .code-link{display:inline-block;padding:.35rem .6rem;border:1px solid #ddd;border-radius:8px;margin:.25rem .35rem 0 0}
+    .outline{background:#fafafa;border:1px solid #eee;border-radius:10px;padding:.85rem 1rem;margin:1rem 0}
+    .outline h4{margin:.1rem 0 .5rem}
+    .outline ol{margin:.25rem 0 0 1.25rem}
+    .fig{margin:1rem 0;text-align:center}
+    .fig img{max-width:100%;height:auto;display:block;margin:0 auto;border-radius:8px}
+    .fig small{display:block;color:#666;margin-top:.35rem}
+    .callout{background:#fff7e6;border:1px solid #ffe2ad;border-radius:10px;padding:.85rem 1rem;margin:1rem 0}
+    .note{background:#eef7ff;border:1px solid #cfe5ff;border-radius:10px;padding:.85rem 1rem;margin:1rem 0}
+    .warn{background:#fff1f0;border:1px solid #ffd6d3;border-radius:10px;padding:.85rem 1rem;margin:1rem 0}
+    .tags{margin-top:1rem}
+    .tag{display:inline-block;background:#f2f2f2;border-radius:999px;padding:.2rem .6rem;margin:.15rem .35rem 0 0;font-size:.9rem}
+    .divider{height:1px;background:#eee;margin:1.25rem 0}
+    pre.code{background:#0f172a;color:#e5e7eb;border-radius:10px;padding:1rem;overflow:auto}
+    .grid{display:grid;grid-template-columns:1.1fr 1fr;gap:1.25rem;align-items:start}
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+<div id="wrapper">
 
-      <div id="main">
-        <section>
-          <h2>Discovering Social Media App Co‑Usage Patterns</h2>
-          <p><strong>Objective:</strong> Identify which popular social media apps are frequently used together by the same users using association rule mining.</p>
-          <img src="images/SocialMediaUsage.png" alt="Dashboard Screenshot" style="max-width:100%;"/>
-          <p><strong>Tools:</strong> R(readxl, dplyr), Excel</p>
-                                                   
+  <header id="header">
+    <a href="index.html" class="logo">OBI</a>
+  </header>
 
+  <div id="main">
+    <section class="post">
+      <!-- HERO -->
+      <div class="post-hero">
+        <img src="images/SocialMediaUsage.png" alt="Association rules — Social app co-usage banner">
+      </div>
 
+      <!-- TITLE + META -->
+      <h2>Social Media App Co-Usage — Tutorial & Findings</h2>
+      <p class="byline"><strong>Obi Oleru</strong> • Aug 28, 2025 • 7–9 min read</p>
+      <p class="updated">Updated: Aug 28, 2025</p>
 
+      <!-- CODE / DATA LINKS -->
+      <p>
+        <a class="code-link" href="code/analysis.R" download>Download R Script</a>
+        <a class="code-link" href="data/bua6315_mod6_data_social_media_usage.xlsx" download>Download Dataset (XLSX)</a>
+        <a class="code-link" href="outputs/rules.csv" download>Download Rules (CSV)</a>
+      </p>
 
+      <!-- INTRO -->
+      <p>
+        This tutorial explores which social apps people tend to use together. Rather than jumping to a heavy market-basket
+        library, I use a transparent, lightweight approach to generate association rules and explain the result metrics in
+        plain language. If you’re new to association rules, this is a great “first principles” walkthrough you can reuse on
+        any binary-indicator dataset (apps, features, products).
+      </p>
 
-        <div class="project-snapshot">
-            <h3>Project Snapshot</h3>
-            <ul>
-                <p><strong>Data:</strong> 100 respondents; columns are binary app‑usage indicators. User ID excluded.</p>
-                <p><strong>Method:</strong> Association rules with thresholds support ≥ 20% and confidence ≥ 60%; ranked by lift.</p>
-<p><strong>What I Did:</strong></p>
-<p>
-               <li>Cleaned the dataset and converted 1/0 indicators to logical values.</li>
-               <img src="images/socialmedia_cleaning.png" alt="Dashboard Screenshot" style="max-width:50%;" />
-                <li>Enumerated frequent itemsets and generated rules without relying on heavy packages, keeping the logic transparent.</li>
-                <img src="images/socialmedia_code.png" alt="Dashboard Screenshot" style="max-width:50%;" />
-                <li>Calculated support, confidence, and lift for each rule.</li>
-            </ul>
+      <div class="note">
+        <strong>What you’ll learn:</strong> how to (1) clean binary data for rules; (2) compute <em>support</em>,
+        <em>confidence</em>, and <em>lift</em>; (3) enumerate frequent itemsets; (4) rank rules; and (5) translate findings into
+        marketing actions.
+      </div>
+
+      <!-- OUTLINE -->
+      <div class="outline">
+        <h4>Outline</h4>
+        <ol>
+          <li><a href="#why">Why co-usage matters</a></li>
+          <li><a href="#data">Data &amp; dictionary</a></li>
+          <li><a href="#prep">Step 1 — Prep &amp; sanity checks</a></li>
+          <li><a href="#metrics">Step 2 — Support, confidence, lift</a></li>
+          <li><a href="#rules">Step 3 — Build &amp; rank rules</a></li>
+          <li><a href="#findings">Findings — Top pairs &amp; interpretation</a></li>
+          <li><a href="#actions">Actions — How to use this</a></li>
+          <li><a href="#appendix">Appendix — Minimal R code</a></li>
+        </ol>
+      </div>
+
+      <!-- WHY -->
+      <h3 id="why">Why co-usage matters</h3>
+      <p>
+        Co-usage reveals <em>audience overlap</em>. If two apps are frequently used by the same people, they’re natural
+        candidates for cross-promotion, bundled offers, or partner campaigns. Marketing teams can also build targeted
+        sequences (e.g., show App B creatives to App A users) to boost adoption where lift is strongest.
+      </p>
+
+      <!-- DATA -->
+      <h3 id="data">Data &amp; dictionary</h3>
+      <div class="grid">
+        <div>
+          <p><strong>Scope:</strong> 100 respondents, each row is a person. Columns are 1/0 binary indicators indicating whether the person regularly uses each app.</p>
+          <ul>
+            <li><strong>User ID</strong> — dropped (not used in modeling)</li>
+            <li><strong>App columns</strong> — e.g., <em>Instagram, Snapchat, Facebook, Twitter, TikTok, YouTube</em>… (1 = uses, 0 = doesn’t)</li>
+          </ul>
+          <p><strong>Assumptions:</strong> Users answered truthfully about regular use; sample is small and illustrative.</p>
         </div>
+        <figure class="fig">
+          <img src="images/Rules.SocialMediaUsage.png" alt="Data columns and rules preview">
+          <small>Binary indicators per user; we convert 1/0 to TRUE/FALSE.</small>
+        </figure>
+      </div>
 
-        <img src="images/top_rules.png" alt="Dashboard Screenshot" style="max-width:50%;" />
-        <img src="images/Rules.SocialMediaUsage.png" alt="Dashboard Screenshot" style="max-width:50%;" />
-        <li>Interpreted results to identify actionable insights.</li>
-                <p><strong>Result Highlights:</strong></p>
-                    <ul>
-                        <li>8 rules met the thresholds.</li>
-                        <li>Top rule: {Snapchat} ⇒ {Instagram}</li>
-                        <li>Support: 0.30 (30 users)</li>
-                        <li>Confidence: 0.638 (63.8% of Snapchat users also use Instagram)</li>
-                        <li>Lift: 1.277 (+27.7% more likely than baseline)</li>
-                    </ul>
-                </li>
-            <p><strong>Impact:</strong> Useful for cross‑promotion, bundled campaigns, and partnership targeting between apps with overlapping audiences.</p>
-            </ul>
-        </div>
-          
-          
-                    <li><strong>So what:</strong> Useful for cross‑promotion, bundled campaigns, and partnership targeting between apps with overlapping audiences.</li>
-          
-          
+      <!-- PREP -->
+      <h3 id="prep">Step 1 — Prep &amp; sanity checks</h3>
+      <p>
+        I removed <code>User&nbsp;ID</code> and coerced each app column from 1/0 to <code>TRUE/FALSE</code>. I also verified there were
+        no all-zero columns (which would never form a frequent itemset) and no fully collinear duplicates.
+      </p>
+      <div class="callout">
+        <strong>Tip:</strong> If you have missing values, impute with 0 (not used) unless the survey explicitly allows “don’t know.”
+      </div>
+
+      <!-- METRICS -->
+      <h3 id="metrics">Step 2 — Support, confidence, lift (in plain English)</h3>
+      <p>
+        <strong>Support</strong> measures how common a combination is across the whole sample. If 30 out of 100 people use
+        both Snapchat and Instagram, support({Snapchat, Instagram}) = <strong>0.30</strong>.
+      </p>
+      <p>
+        <strong>Confidence</strong> measures reliability of a rule. For {Snapchat} ⇒ {Instagram}, it’s the share of Snapchat
+        users who also use Instagram. If 63.8% of Snapchat users also use Instagram, confidence = <strong>0.638</strong>.
+      </p>
+      <p>
+        <strong>Lift</strong> tells you how much more likely the consequent is within the antecedent group vs the general
+        population. A lift of 1.277 means “27.7% more likely than baseline.” This is often the most useful business lens.
+      </p>
+
+      <!-- RULES -->
+      <h3 id="rules">Step 3 — Build &amp; rank rules (transparent approach)</h3>
+      <p>
+        With a modest number of apps, simple enumeration is fast and keeps the logic obvious. I generated all candidate
+        itemsets, filtered those with <strong>support ≥ 0.20</strong>, and then created rules with <strong>confidence ≥ 0.60</strong>.
+        Finally, I ranked by <strong>lift</strong> (tie-break by confidence, then support).
+      </p>
+      <div class="fig">
+        <img src="images/top_rules.png" alt="Top co-usage rules by lift">
+        <small>Top rules by lift (higher is stronger than baseline co-usage).</small>
+      </div>
+
+      <!-- FINDINGS -->
+      <h3 id="findings">Findings — Top pairs &amp; interpretation</h3>
+      <div class="callout">
+        <p style="margin:.25rem 0;"><strong>Rules meeting thresholds:</strong> <strong>8</strong></p>
+        <p style="margin:.25rem 0;"><strong>Top rule:</strong> {Snapchat} ⇒ {Instagram}</p>
+        <p style="margin:.25rem 0;"><strong>Support:</strong> 0.30 (30 users)</p>
+        <p style="margin:.25rem 0;"><strong>Confidence:</strong> 0.638 (63.8% of Snapchat users also use Instagram)</p>
+        <p style="margin:.25rem 0;"><strong>Lift:</strong> 1.277 → Snapchat users are <strong>27.7% more likely</strong> than the average user to use Instagram.</p>
+      </div>
+      <p>
+        This pattern suggests a high-overlap audience with strong visual-sharing behavior. If you’re planning cross-promotions,
+        this pair is a safe bet: creative that references both platforms should resonate and convert.
+      </p>
+
+      <div class="warn">
+        <strong>Small-n caution:</strong> With 100 respondents, treat lift as directional. Validate on a larger panel or a
+        recent usage log (if available) before scaling spend.
+      </div>
+
+      <!-- ACTIONS -->
+      <h3 id="actions">Actions — How to use this</h3>
+      <ul>
+        <li><strong>Cross-promotion:</strong> Bundle offers (e.g., “follow us on both Snapchat &amp; Instagram for early sneak peeks”).</li>
+        <li><strong>Audience extension:</strong> Start with Snapchat audiences, retarget on Instagram; test look-alikes.</li>
+        <li><strong>Creative sequencing:</strong> Tease short/ephemeral content on Snapchat, drive to richer Instagram posts.</li>
+        <li><strong>Partnerships:</strong> Align influencer campaigns where lift and support are both high.</li>
+      </ul>
+
+      <div class="divider"></div>
+
+      <!-- APPENDIX -->
+      <h3 id="appendix">Appendix — Minimal R (no heavy packages)</h3>
+      <pre class="code"><code># df: 1/0 indicators for each app (exclude "User ID" beforehand)
+X <- df; X[] <- lapply(X, function(x) as.logical(as.integer(x)))
+min_supp <- 0.20; min_conf <- 0.60
+
+supp <- function(items, M=X){
+  if (length(items)==1) mean(M[[items]])
+  else mean(rowSums(M[, items, drop=FALSE]) == length(items))
+}
+
+# Frequent itemsets
+vars <- names(X); freq <- list()
+for (k in 1:length(vars)){
+  for (items in combn(vars, k, simplify=FALSE)){
+    s <- supp(items); if (s >= min_supp)
+      freq[[paste(items, collapse=" & ")]] <- list(items=items, support=s)
+  }
+}
+
+# Rules + metrics
+rules <- do.call(rbind, lapply(freq, function(f){
+  I <- f$items; s_xy <- f$support
+  if (length(I) < 2) return(NULL)
+  out <- list(); j <- 1L
+  for (r in 1:(length(I)-1)) for (A in combn(I, r, simplify=FALSE)){
+    B <- setdiff(I, A); conf <- s_xy / supp(A)
+    if (conf >= min_conf){
+      lift <- conf / supp(B)
+      out[[j]] <- data.frame(
+        Antecedent = paste(A, collapse=", "),
+        Consequent = paste(B, collapse=", "),
+        Support = s_xy, Confidence = conf, Lift = lift
+      ); j <- j + 1L
+    }
+  }
+  if (length(out)) do.call(rbind, out)
+}))
+rules <- rules[order(-rules$Lift, -rules$Confidence, -rules$Support), ]
+head(rules)
+</code></pre>
+
+      <!-- TAGS -->
+      <div class="tags">
+        <span class="tag">#R</span>
+        <span class="tag">#association-rules</span>
+        <span class="tag">#market-baskets</span>
+        <span class="tag">#marketing-analytics</span>
+        <span class="tag">#portfolio</span>
+      </div>
+
+      <!-- Back / Share -->
+      <p style="margin-top:1rem;">
+        <a href="index.html" class="code-link">← Back to Portfolio</a>
+        <a class="code-link" target="_blank" rel="noopener"
+           href="https://www.linkedin.com/sharing/share-offsite/?url=https://YOURDOMAIN/social_media_co_usage_blog.html">Share on LinkedIn</a>
+      </p>
+    </section>
+  </div>
+
+  <footer id="footer">
+    <section class="split contact">
+      <section class="alt"><h3>Location</h3><p>Fort Worth, TX</p></section>
+      <section><h3>Email</h3><p><a href="mailto:optimalbusinessinsights@gmail.com">optimalbusinessinsights@gmail.com</a></p></section>
+      <section><h3>GitHub</h3><p><a href="https://github.com/OBOptics">OBOptics</a></p></section>
+    </section>
+  </footer>
+
+  <div id="copyright">
+    <ul><li>&copy; OBI</li><li>Theme: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+  </div>
+</div>
+
+<!-- Theme scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
