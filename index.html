@@ -73,9 +73,7 @@
 						  <li><a href="index.html">Portfolio</a></li>
 						  <li><a href="about.html">About Me</a></li>
 						  <li><a href="https://docs.google.com/document/d/1agap_AZkamcOk3ifp3Y6v6y_J69ODATAMh2Fh3GwaWQ/edit?usp=sharing" target="_blank">Resume</a></li>
-						  <li><a href="https://public.tableau.com/app/profile/annetta.oleru/vizzes" target="_blank">Tableau</a></li>
 						  <li><a href="https://www.linkedin.com/in/annetta-oleru-3b749a298/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-						  <li><a href="https://github.com/OBOptics" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
 						</ul>
 					  </nav>
 					  
@@ -101,33 +99,43 @@
 
   
 						<!-- Featured Post -->
-						<article class="post featured">
+						  
+						  <article class="post featured">
 							<header class="major">
-							  <h2><a href="dete.html">DETE Exit Survey — Drivers of Turnover</a></h2>
-							  <p>Tools: Tableau Public • Excel</p>
+								<h2><a href="mobile_banking.html">Mobile Banking App Adoption — Decision Tree</a></h2>
+								<p>Tools: R • Excel</p>
 							</header>
 						  
 							<!-- Featured image generated from your dataset -->
-							<a href="dete.html" class="image main">
-							  <img src="images/dete_separation_types.png" alt="DETE separation types distribution" />
-							</a>
+							<a href="mobile_banking.html" class="image fit">
+								<img src="images/mobile_banking_tree.png" alt="Decision tree preview for mobile banking" />
+							  </a>
 						  
-							<p>
-							  Who’s leaving, why, and when? This analysis blends the DETE exit survey with
-							  tenure and age patterns to reveal where resignations, retirements, and terminations
-							  cluster—plus where dissatisfaction is highest—so HR can target retention and
-							  transition programs.
-							</p>
+							  <p>
+								Built an explainable <strong>classification tree (CART, Gini)</strong> to predict which customers will
+								download the bank’s mobile app, following the case protocol: <strong>50/30/20 split</strong> with
+								<strong>seed=12345</strong>, pruning by validation to prevent overfitting. The model outputs calibrated
+								probabilities for ranking and a simple set of business rules (e.g., CD holders with higher income trend
+								more likely to adopt), making it easy for Marketing and Compliance to act on.
+							  </p>
+							  <p>
+								On the held-out test set at a 0.50 threshold, the pruned tree delivered
+								<strong>Accuracy 0.45</strong>, <strong>Sensitivity 1.00</strong>, <strong>Specificity 0.00</strong>,
+								and <strong>Precision 0.45</strong>; a full <strong>ROC/AUC</strong> analysis is included to choose an
+								operating point that fits budget and CPA/LTV goals. The final model also
+								<strong>scores 20 new customers</strong> with adoption probabilities so the bank can execute
+								a top-N outreach (rank by probability) and measure conversion lift.
+							  </p>
 						  
 							<ul class="actions special">
-							  <li><a href="dete.html" class="button large">View Project</a></li>
+							  <li><a href="mobile_banking.html" class="button large">View Project</a></li>
 							</ul>
 						  </article>
 						  
 				
 						<!-- Posts -->
 						<section class="posts">
-							<article>
+							  <article>
 								<header>
 								  <h2><a href="Longitudinal.html">Longitudinal Survey Insights — Income, Sociability &amp; Health</a></h2>
 								  <p>Tools: R, Excel/Analytic Solver</p>
@@ -263,6 +271,4 @@
 			<script src="assets/js/main.js"></script>
 
 	</body>
-
 </html>
-
