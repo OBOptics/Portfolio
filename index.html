@@ -98,43 +98,63 @@
 					<div id="main">
 
   
-						<!-- Featured Post -->
-						  
-						  <article class="post featured">
-							<header class="major">
-								<h2><a href="mobile_banking.html">Mobile Banking App Adoption — Decision Tree</a></h2>
-								<p>Tools: R • Excel</p>
-							</header>
-						  
-							<!-- Featured image generated from your dataset -->
-							<a href="mobile_banking.html" class="image fit">
-								<img src="images/mobile_banking_tree.png" alt="Decision tree preview for mobile banking" />
-							  </a>
-						  
-							  <p>
-								Built an explainable <strong>classification tree (CART, Gini)</strong> to predict which customers will
-								download the bank’s mobile app, following the case protocol: <strong>50/30/20 split</strong> with
-								<strong>seed=12345</strong>, pruning by validation to prevent overfitting. The model outputs calibrated
-								probabilities for ranking and a simple set of business rules (e.g., CD holders with higher income trend
-								more likely to adopt), making it easy for Marketing and Compliance to act on.
-							  </p>
-							  <p>
-								On the held-out test set at a 0.50 threshold, the pruned tree delivered
-								<strong>Accuracy 0.45</strong>, <strong>Sensitivity 1.00</strong>, <strong>Specificity 0.00</strong>,
-								and <strong>Precision 0.45</strong>; a full <strong>ROC/AUC</strong> analysis is included to choose an
-								operating point that fits budget and CPA/LTV goals. The final model also
-								<strong>scores 20 new customers</strong> with adoption probabilities so the bank can execute
-								a top-N outreach (rank by probability) and measure conversion lift.
-							  </p>
-						  
-							<ul class="actions special">
-							  <li><a href="mobile_banking.html" class="button large">View Project</a></li>
-							</ul>
-						  </article>
-						  
-				
+						<!-- ABOUT ME (top of home) -->
+<section id="about" class="post about-card">
+	<header class="major">
+	  <h2>About Me</h2>
+	  <p>Hi, I’m <strong>Obi Oleru</strong> — I turn messy data into clear, decision-ready stories with analytics and machine learning.</p>
+	</header>
+  
+	<div class="about-grid">
+	  <div class="about-photo-wrap">
+  
+	  <div class="about-text">
+		<img class="about-photo" src="images/obi.jpg" alt=""style="max-width:170px;width:100%;" class="about-headshot round">
+		<p>
+		  I build tidy, reliable datasets and translate them into insights leaders can act on.
+		  My work spans <em>data cleaning, EDA, statistical modeling, and dashboards</em>—plus
+		  <strong>machine learning</strong> for prediction and segmentation (trees/ensembles, logistic regression,
+		  clustering, model validation, ROC/AUC, and calibration).
+		</p>
+  
+		<p><strong>Toolbox:</strong> Python, R, SQL, Tableau, Excel &nbsp;(<em>pandas, scikit-learn, ggplot2, statsmodels</em>)</p>
+  
+		<ul>
+		  <li><em>Clarity first:</em> define the decision, then the metric and the data needed.</li>
+		  <li><em>Reproducible:</em> clean code, versioned outputs, documented assumptions.</li>
+		  <li><em>ML in practice:</em> holdouts/cross-validation, threshold tuning, cost-sensitive evaluation, and readable model summaries.</li>
+		  <li><em>Impact-minded:</em> every chart/model ends with a recommendation or next step.</li>
+		</ul>
+  
+		<p style="margin-top:.6rem;">
+		  <a class="button" href="about.html">Learn more</a>
+		  <a class="button" href="mailto:optimalbusinessinsights@gmail.com">Email</a>
+		  <a class="button" href="https://github.com/OBOptics" target="_blank" rel="noopener">GitHub</a>
+		  <a class="button" href="https://www.linkedin.com/in/annetta-oleru-3b749a298/" target="_blank" rel="noopener">LinkedIn</a>
+		</p>
+	  </div>
+	</div>
+  </section>
+  
+  
 						<!-- Posts -->
 						<section class="posts">
+							<article>
+								<header>
+								  <h2><a href="mobile_banking.html">Mobile Banking App Adoption — Decision Tree</a></h2>
+								  <p>Tools: R • Excel</p>
+								</header>
+								<a href="mobile_banking.html" class="image fit">
+								  <img src="images/mobile_banking_tree.png" alt="Decision tree preview for mobile banking" />
+								</a>
+								<p>
+								  Explainable CART model predicting who adopts the bank’s app. Case protocol (50/30/20, seed=12345), 
+								  pruning by validation, full ROC/AUC, and scoring for 20 new customers for top-N outreach.
+								</p>
+								<ul class="actions special">
+								  <li><a href="mobile_banking.html" class="button">View Project</a></li>
+								</ul>
+							  </article>
 							  <article>
 								<header>
 								  <h2><a href="Longitudinal.html">Longitudinal Survey Insights — Income, Sociability &amp; Health</a></h2>
@@ -272,4 +292,5 @@
 
 	</body>
 </html>
+
 
