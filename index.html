@@ -1,417 +1,307 @@
 <!DOCTYPE HTML>
-<!--
-	Massively by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<!-- Put AFTER main.css -->
-<style>
-	/* Use your banner as the top hero background */
-	#intro{
-	  position: relative;
-	  background-image: url("images/bannernew.png") !important;
-	  background-size: contain !important;
-	  background-position: center !important;
-	  background-repeat: no-repeat !important;
-	}
-  
-	
-	/* Keep the hero text above the overlay */
-	#intro > *{ position: relative; z-index: 1; }
-  </style>
-   
 <html>
-	<head>
-		<style>
-			/* --- Global background override --- */
-			:root { --tan: #874f06; }         /* pick your tan; try #f5e6d3 or #efe2cf too */
-		  
-			html, body {
-			  background-color: var(--tan) !important;
-			}
-		  
-			/* Remove the theme’s dark gradient overlay */
-			body::before {
-			  content: none !important;       /* turns off the pseudo-element */
-			  background: none !important;    /* extra safety */
-			}
-		  
-			/* Keep content cards clean */
-			#wrapper { background: transparent !important; }
-		  </style>
-		  
-		<title>Obi Oleru </title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	</head>
-	<body class="is-preload">
+<head>
+  <title>Obi Oleru • Portfolio</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 
-		  
-		<!-- Wrapper -->
-			<div id="wrapper" class="fade-in">
+  <style>
+    /* ---------- Global background override ---------- */
+    :root { --tan: #874f06; }    /* tweak if you want a lighter tan */
+    html, body { background: var(--tan) !important; }
+    body::before { content: none !important; }      /* remove theme’s dark overlay */
+    #wrapper { background: transparent !important; }
 
-			<!-- Intro -->
-        <div id="intro" style="text-align: left;">
-        <h1><br /></h1>
-        <p class="align-left">Analyst skilled in Python, R, SQL, Tableau, Power BI, AWS, and Excel</p>
-        <ul class="actions">
-        <li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
-        </ul>
-    </div>
+    /* ---------- HERO (replaces theme's #intro) ---------- */
+    #hero{
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56vh;                 /* size of the banner area */
+      padding: 4rem 1.5rem;             /* breathing room for text on small screens */
+      text-align: center;
+      color: #fff;
+      background-image: url("images/bannernew.png");
+      background-size: cover;           /* fill the width; crop if needed */
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    /* a soft readable overlay (optional) */
+    #hero::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.20));
+      pointer-events:none;
+    }
+    #hero > * { position: relative; z-index: 1; } /* keep text above overlay */
+    #hero h1 { margin: 0 0 .6rem; font-size: 2.8rem; letter-spacing:.03em; }
+    #hero p  { margin: 0; font-size: 1.15rem; }
 
+    /* ---------- About (same look as your About tab) ---------- */
+    .post.about-card{ max-width:1100px; margin:0 auto; }
+    .about-grid{ display:grid; grid-template-columns:320px 1fr; gap:1.75rem; align-items:start; }
+    .about-photo{ width:100%; max-width:280px; aspect-ratio:1/1; border-radius:999px; object-fit:cover; box-shadow:0 8px 24px rgba(0,0,0,.12); }
+    .mini-cards{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.9rem; }
+    .mini-card{ background:#fff; border:1px solid #eee; border-radius:12px; padding:.85rem 1rem; }
+    .badge{ display:inline-block; padding:.3rem .65rem; border-radius:999px; background:#f2f2f2; margin:.22rem .35rem .22rem 0; white-space:nowrap; }
 
-				<!-- Header -->
-					<header id="header">
-						<a href="index.html" class="logo">OBI</a>
-					</header>
+    /* ---------- Projects grid (aligned buttons) ---------- */
+    .posts-grid{
+      max-width:1100px; margin:0 auto;
+      display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:2.25rem; align-items:stretch;
+    }
+    .project-card{
+      display:flex; flex-direction:column;
+      background:#fff; border:1px solid #eee; border-radius:14px; overflow:hidden;
+    }
+    .project-card .thumb{ height:240px; overflow:hidden; }
+    .project-card .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .project-card .content{ padding:1.1rem 1.2rem; display:flex; flex-direction:column; flex:1 1 auto; }
+    .project-card h3{ margin:0 0 .35rem; }
+    .project-card p.meta{ margin:.15rem 0 .85rem; color:#666; }
+    .project-card p.desc{ margin:0 0 1rem; flex:1 1 auto; }
+    .project-card .actions{ margin-top:auto; }
 
-				<!-- Nav -->
-					<nav id="nav">
-						<ul class="links">
-						  <li><a href="index.html">Portfolio</a></li>
-						  <li><a href="https://docs.google.com/document/d/1YIiLp7CTT76a89XYqrCLodrzdZNKrnr5/edit?usp=sharing&ouid=102047502521928957248&rtpof=true&sd=true" target="_blank">Resume</a></li>
-						  <li><a href="https://www.linkedin.com/in/annetta-obi-oleru/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-						</ul>
-					  </nav>
-					  
-				<!-- Main -->
-				<style>
-					/* Center hero/banner content */
-					#intro{
-					  position:relative;
-					  background-image:url("images/bannernew.png") !important;
-					  background-size:contain !important;
-					  background-position:center !important;
-					  background-repeat:no-repeat !important;
-					  text-align:center;
-					  display:flex; align-items:center; justify-content:center;
-					  min-height:48vh; padding-left:0; /* remove previous left nudge */
-					}
-					#intro .actions{ justify-content:center; }
-				  
-					/* Match the About tab layout */
-					.post.about-card{ max-width:1100px; margin:0 auto; }
-					.about-grid{
-					  display:grid;
-					  grid-template-columns:320px 1fr;
-					  gap:1.75rem;
-					  align-items:start;
-					}
-					.about-photo{
-					  width:100%; max-width:280px; aspect-ratio:1/1;
-					  border-radius:999px; object-fit:cover;
-					  box-shadow:0 8px 24px rgba(0,0,0,.12);
-					}
-					.mini-cards{
-					  display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.9rem;
-					}
-					.mini-card{
-					  background:#fff; border:1px solid #eee; border-radius:12px; padding:.85rem 1rem;
-					}
-					.badge{
-					  display:inline-block; padding:.3rem .65rem; border-radius:999px;
-					  background:#f2f2f2; margin:.22rem .35rem .22rem 0; white-space:nowrap;
-					}
-				  
-					/* Center the rest of the page width like the tab page */
-					#main > section, .posts{ max-width:1100px; margin:0 auto; }
-				  
-					@media (max-width:980px){
-					  .about-grid{ grid-template-columns:1fr; }
-					  .mini-cards{ grid-template-columns:repeat(2,1fr); }
-					}
-				  </style>
-				  
-					<div id="main">
-						
+    /* ---------- Sections width ---------- */
+    #main > section{ max-width:1100px; margin:0 auto; }
 
-  
-						<!-- ABOUT ME (top of home) -->
-<!-- ABOUT ME (top of home) -->
-<section id="about" class="post about-card">
-	<header class="major">
-	  <h2>About Me</h2>
-	  <p>Analyst skilled in Python, R, SQL, Tableau, and Excel</p>
-	</header>
-  
-	<div class="about-grid">
-	  <!-- Left column: round photo + mini cards -->
-	  <div>
-		<img class="about-photo" src="images/obi.jpg" alt="Portrait of Obi Oleru" />
-		<div class="mini-cards" style="margin-top:1rem;">
-		  <div class="mini-card"><strong>Location</strong><br/>Fort Worth, TX</div>
-		  <div class="mini-card"><strong>Education</strong><br/>Business Analytics</div>
-		  <div class="mini-card"><strong>Interests</strong><br/>People-data, Ops, Equity</div>
-		</div>
-	  </div>
-  
-	  <!-- Right column: content (same structure as About tab) -->
-	  <div>
-		<div class="section">
-		  <h3>Hello!</h3>
-		  <p>
-			I help teams move from “we think” to “we know.” I wrangle data, validate assumptions,
-			and package results so busy stakeholders can act quickly and confidently. I turn messy
-			data into clear, decision-ready stories with analytics and machine learning.
-		  </p>
-		</div>
-  
-		<div class="section">
-		  <h3>Skills &amp; Tools</h3>
-		  <p>
-			<span class="badge">Python</span><span class="badge">R</span><span class="badge">SQL</span>
-			<span class="badge">Tableau</span><span class="badge">Excel</span>
-			<span class="badge">pandas</span><span class="badge">scikit-learn</span>
-			<span class="badge">ggplot2</span><span class="badge">statsmodels</span>
-			<span class="badge">Data Cleaning</span><span class="badge">EDA</span>
-			<span class="badge">A/B Testing</span><span class="badge">Dashboards</span>
-			<span class="badge">AWS</span><span class="badge">SAS</span>
-		  </p>
-		</div>
-  
-		<div class="section">
-		  <h3>Recent Projects</h3>
-		  <ul>
-			<li><strong>Mobile Banking:</strong> Decision tree for app adoption with ROC/AUC and scoring (R).</li>
-			<li><strong>DETE Exit Survey:</strong> Who leaves, why, and where to intervene (Tableau + Excel).</li>
-			<li><strong>Longitudinal Survey:</strong> Income drivers, sociability &amp; health (R + Solver).</li>
-			<li><strong>NYC Collisions:</strong> Trend/seasonality &amp; hotspots (Python + Folium).</li>
-			<li><strong>Social App Co-usage:</strong> Association rules for cross-promotion (R).</li>
-		  </ul>
-		</div>
-  
-		<div class="section">
-		  <h3>Let’s Connect</h3>
-		  <p>
-			I’m open to consulting and full-time roles where I can partner with product, operations,
-			or HR to build insight pipelines and dashboards that drive results.
-		  </p>
-		  <p>
-			<a class="button" href="https://docs.google.com/document/d/1YIiLp7CTT76a89XYqrCLodrzdZNKrnr5/edit?usp=sharing&ouid=102047502521928957248&rtpof=true&sd=true" target="_blank">View Résumé</a>
-			<a class="button" href="mailto:optimalbusinessinsights@gmail.com">Email Me</a>
-			<a class="button" href="https://www.linkedin.com/in/annetta-obi-oleru/" target="_blank" rel="noopener">LinkedIn</a>
-			<a class="button" href="https://github.com/OBOptics" target="_blank" rel="noopener">GitHub</a>
-		  </p>
-		</div>
-	  </div>
-	</div>
-  </section>
-  
-  
-						<!-- Posts -->
-			<!-- Projects grid (replace your existing posts sections with THIS) -->
-<style>
-	/* Two-up grid, equal-height cards */
-	.posts-grid{
-	  max-width:1100px; margin:0 auto;               /* center like your About layout */
-	  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
-	  gap:2.25rem; align-items:stretch;
-	}
-	.project-card{
-	  display:flex; flex-direction:column;
-	  background:#fff; border:1px solid #eee; border-radius:14px;
-	  overflow:hidden;
-	}
-	.project-card .thumb{ height:240px; overflow:hidden; }
-	.project-card .thumb img{
-	  width:100%; height:100%; object-fit:cover; display:block;
-	}
-	.project-card .content{
-	  padding:1.1rem 1.2rem; display:flex; flex-direction:column; flex:1 1 auto;
-	}
-	.project-card h3{ margin:0 0 .35rem; }
-	.project-card p.meta{ margin:.15rem 0 .85rem; color:#666; }
-	.project-card p.desc{ margin:0 0 1rem; flex:1 1 auto; }
-	.project-card .actions{ margin-top:auto; }
-	@media (max-width:980px){
-	  .posts-grid{ grid-template-columns:1fr; }
-	  .project-card .thumb{ height:200px; }
-	}
+    /* ---------- Responsive ---------- */
+    @media (max-width: 980px){
+      .about-grid{ grid-template-columns:1fr; }
+      .mini-cards{ grid-template-columns:repeat(2,1fr); }
+      .posts-grid{ grid-template-columns:1fr; }
+      .project-card .thumb{ height:200px; }
+      #hero{ min-height: 46vh; padding: 3rem 1rem; }
+      #hero h1{ font-size: 2.2rem; }
+      #hero p { font-size: 1rem; }
+    }
   </style>
-  
-  <section class="posts-grid">
-  
-	<!-- 1) Mobile Banking -->
-	<article class="project-card">
-	  <a href="mobile_banking.html" class="thumb">
-		<img src="images/mobile_banking_tree.png" alt="Decision tree preview for mobile banking">
-	  </a>
-	  <div class="content">
-		<h3><a href="mobile_banking.html">Mobile Banking App Adoption — Decision Tree</a></h3>
-		<p class="meta">Tools: R • Excel</p>
-		<p class="desc">
-		  Explainable CART model to predict who adopts the bank’s app (50/30/20 split, seed=12345),
-		  pruning by validation, ROC/AUC, and scoring 20 new customers for top-N outreach.
-		</p>
-		<div class="actions">
-		  <a href="mobile_banking.html" class="button">View Project</a>
-		</div>
-	  </div>
-	</article>
-  
-	<!-- 2) Longitudinal -->
-	<article class="project-card">
-	  <a href="Longitudinal.html" class="thumb">
-		<img src="images/edu_income_scatter.png" alt="Education vs Income chart from longitudinal project">
-	  </a>
-	  <div class="content">
-		<h3><a href="Longitudinal.html">Longitudinal Survey — Income, Sociability &amp; Health</a></h3>
-		<p class="meta">Tools: R • Excel/Analytic Solver</p>
-		<p class="desc">
-		  Multivariate & logistic models plus data-mining methods to quantify income drivers, sociability,
-		  and wellness signals; converted into practical program recommendations.
-		</p>
-		<div class="actions">
-		  <a href="Longitudinal.html" class="button">View Project</a>
-		</div>
-	  </div>
-	</article>
-  
-	<!-- 3) NYC Collisions -->
-	<article class="project-card">
-	  <a href="NYC.html" class="thumb">
-		<img src="images/nyc_from_notebook_01.png" alt="NYC crashes by hour visualization">
-	  </a>
-	  <div class="content">
-		<h3><a href="NYC.html">NYC Collisions — Crash Patterns &amp; Risk Signals</a></h3>
-		<p class="meta">Tools: Python (pandas, seaborn, statsmodels) • Folium</p>
-		<p class="desc">
-		  When, where, and why crashes happen—hourly peaks, borough hot spots, contributing factors,
-		  and seasonality—translated into actions for enforcement and engineering.
-		</p>
-		<div class="actions">
-		  <a href="NYC.html" class="button">View Project</a>
-		</div>
-	  </div>
-	</article>
-  
-	<!-- 4) Highest-Paid Athletes (Tableau) -->
-	<article class="project-card">
-	  <a href="HighestPaidAthletes.html" class="thumb">
-		<img src="images/sport_share_bar.png" alt="Sport share of athletes’ earnings">
-	  </a>
-	  <div class="content">
-		<h3><a href="HighestPaidAthletes.html">World’s Highest-Paid Athletes — Tableau</a></h3>
-		<p class="meta">Tools: Tableau Public</p>
-		<p class="desc">
-		  Explore on- vs off-field earnings, sport mix, and endorsement-heavy profiles with an
-		  interactive dashboard and supporting visuals.
-		</p>
-		<div class="actions">
-		  <a href="HighestPaidAthletes.html" class="button">View Dashboard</a>
-		</div>
-	  </div>
-	</article>
-  
-	<!-- 5) Social App Co-Usage -->
-	<article class="project-card">
-	  <a href="socialmediausage.html" class="thumb">
-		<img src="images/Rules.SocialMediaUsage.png" alt="Association rules table for social app co-usage">
-	  </a>
-	  <div class="content">
-		<h3><a href="socialmediausage.html">Social App Co-Usage — Rules &amp; Insights</a></h3>
-		<p class="meta">Tools: R • Excel</p>
-		<p class="desc">
-		  Which apps are used together? Transparent association rules (support, confidence, lift)
-		  reveal cross-promotion opportunities with lift-ranked pairs.
-		</p>
-		<div class="actions">
-		  <a href="socialmediausage.html" class="button">View Project</a>
-		</div>
-	  </div>
-	</article>
-  
-	<!-- 6) Under Armour vs Age -->
-	<article class="project-card">
-	  <a href="underarmour.html" class="thumb">
-		<img src="images/ua_prob_vs_age.png" alt="Under Armour purchase probability vs age">
-	  </a>
-	  <div class="content">
-		<h3><a href="underarmour.html">Under Armour Purchase vs Age</a></h3>
-		<p class="meta">Tools: R • Excel</p>
-		<p class="desc">
-		  Linear-probability and logistic models quantify the age-purchase relationship; validated with a
-		  holdout split and summarized via accuracy and Brier score.
-		</p>
-		<div class="actions">
-		  <a href="underarmour.html" class="button">View Project</a>
-		</div>
-	  </div>
-	</article>
-  
+</head>
+<body class="is-preload">
+<div id="wrapper" class="fade-in">
+
+  <!-- HERO (top banner; we DO NOT use id="intro" to avoid theme auto-hide) -->
+  <section id="hero" aria-label="Site hero banner">
+    <div>
+      <p>Analyst skilled in Python, R, SQL, Tableau, Power BI, AWS, and Excel</p>
+    </div>
   </section>
-  
 
-					
+  <!-- Header / Nav -->
+  <header id="header">
+    <a href="index.html" class="logo">OBI</a>
+  </header>
 
-					</div>
+  <nav id="nav">
+    <ul class="links">
+      <li class="active"><a href="index.html">Portfolio</a></li>
+      <li><a href="https://docs.google.com/document/d/1YIiLp7CTT76a89XYqrCLodrzdZNKrnr5/edit?usp=sharing&ouid=102047502521928957248&rtpof=true&sd=true" target="_blank" rel="noopener">Resume</a></li>
+      <li><a href="https://www.linkedin.com/in/annetta-obi-oleru/" class="icon brands alt fa-linkedin-in" target="_blank" rel="noopener"><span class="label">LinkedIn</span></a></li>
+    </ul>
+  </nav>
 
-				<!-- Footer -->
-					<footer id="footer">
-						<section>
-							<form method="post" action="https://formspree.io/f/manjlqlw" class="alt">
-								<div class="fields">
-									<div class="field">
-										<label for="name">Name</label>
-										<input type="text" name="name" id="name" />
-									</div>
-									<div class="field">
-										<label for="email">Email</label>
-										<input type="text" name="email" id="email" />
-									</div>
-									<div class="field">
-										<label for="message">Message</label>
-										<textarea name="message" id="message" rows="3"></textarea>
-									</div>
-								</div>
-								<ul class="actions">
-									<li><input type="submit" value="Send Message" /></li>
-								</ul>
-							</form>
-						</section>
-						<section class="split contact">
-							<section class="alt">
-								<h3>Address</h3>
-								<p><br />
-								Fort Worth, TX </p>
-							</section>
-							<section>
-								<h3>Phone</h3>
-								<p><a href="tel:+14058375436">+1 (405) 837-5436</a></p>
-							</section>
-							<section>
-								<h3>Email</h3>
-								<p><a href="mailto:optimalbusinessinsights@gmail.com">optimalbusinessinsights@gmail.com</a></p>
-							</section>
-							<section>
-								<h3>Social</h3>
-								<ul class="icons alt">
+  <!-- MAIN -->
+  <div id="main">
 
-									<li><a href="https://github.com/OBOptics" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
-								</ul>
-							</section>
-						</section>
-					</footer>
+    <!-- ABOUT (same layout as About tab) -->
+    <section id="about" class="post about-card">
+      <header class="major">
+        <h2>About Me</h2>
+        <p>Analyst skilled in Python, R, SQL, Tableau, Power BI, AWS, and Excel</p>
+      </header>
 
-				<!-- Copyright -->
-					<div id="copyright">
-						<ul><li>&copy; OBI</li><li>Company: <a href="https://html5up.net">Optimal Business Insights</a></li></ul>
-					</div>
+      <div class="about-grid">
+        <div>
+          <img class="about-photo" src="images/obi.jpg" alt="Portrait of Obi Oleru" />
+          <div class="mini-cards" style="margin-top:1rem;">
+            <div class="mini-card"><strong>Location</strong><br/>Fort Worth, TX</div>
+            <div class="mini-card"><strong>Education</strong><br/>Business Analytics</div>
+            <div class="mini-card"><strong>Interests</strong><br/>People-data, Ops, Equity</div>
+          </div>
+        </div>
 
-			</div>
+        <div>
+          <div class="section">
+            <h3>Hello!</h3>
+            <p>I help teams move from “we think” to “we know.” I wrangle data, validate assumptions,
+              and package results so busy stakeholders can act quickly and confidently. I turn messy
+              data into clear, decision-ready stories with analytics and machine learning.</p>
+          </div>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+          <div class="section">
+            <h3>Skills &amp; Tools</h3>
+            <p>
+              <span class="badge">Python</span><span class="badge">R</span><span class="badge">SQL</span>
+              <span class="badge">Tableau</span><span class="badge">Power BI</span><span class="badge">Excel</span>
+              <span class="badge">pandas</span><span class="badge">scikit-learn</span>
+              <span class="badge">ggplot2</span><span class="badge">statsmodels</span>
+              <span class="badge">Data Cleaning</span><span class="badge">EDA</span>
+              <span class="badge">A/B Testing</span><span class="badge">Dashboards</span>
+              <span class="badge">AWS</span><span class="badge">SAS</span>
+            </p>
+          </div>
 
-	</body>
+          <div class="section">
+            <h3>Recent Projects</h3>
+            <ul>
+              <li><strong>Mobile Banking:</strong> Decision tree for app adoption with ROC/AUC and scoring (R).</li>
+              <li><strong>DETE Exit Survey:</strong> Who leaves, why, and where to intervene (Tableau + Excel).</li>
+              <li><strong>Longitudinal Survey:</strong> Income drivers, sociability &amp; health (R + Solver).</li>
+              <li><strong>NYC Collisions:</strong> Trend/seasonality &amp; hotspots (Python + Folium).</li>
+              <li><strong>Social App Co-usage:</strong> Association rules for cross-promotion (R).</li>
+            </ul>
+          </div>
+
+          <div class="section">
+            <h3>Let’s Connect</h3>
+            <p>I’m open to consulting and full-time roles where I can partner with product, operations, or HR
+              to build insight pipelines and dashboards that drive results.</p>
+            <p>
+              <a class="button" href="https://docs.google.com/document/d/1YIiLp7CTT76a89XYqrCLodrzdZNKrnr5/edit?usp=sharing&ouid=102047502521928957248&rtpof=true&sd=true" target="_blank" rel="noopener">View Résumé</a>
+              <a class="button" href="mailto:optimalbusinessinsights@gmail.com">Email Me</a>
+              <a class="button" href="https://www.linkedin.com/in/annetta-obi-oleru/" target="_blank" rel="noopener">LinkedIn</a>
+              <a class="button" href="https://github.com/OBOptics" target="_blank" rel="noopener">GitHub</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS GRID -->
+    <section class="posts-grid">
+
+      <!-- 1) Mobile Banking -->
+      <article class="project-card">
+        <a href="mobile_banking.html" class="thumb">
+          <img src="images/mobile_banking_tree.png" alt="Decision tree preview for mobile banking">
+        </a>
+        <div class="content">
+          <h3><a href="mobile_banking.html">Mobile Banking App Adoption — Decision Tree</a></h3>
+          <p class="meta">Tools: R • Excel</p>
+          <p class="desc">Explainable CART model to predict who adopts the bank’s app (50/30/20 split, seed=12345),
+            pruning by validation, ROC/AUC, and scoring 20 new customers for top-N outreach.</p>
+          <div class="actions"><a href="mobile_banking.html" class="button">View Project</a></div>
+        </div>
+      </article>
+
+      <!-- 2) Longitudinal -->
+      <article class="project-card">
+        <a href="Longitudinal.html" class="thumb">
+          <img src="images/edu_income_scatter.png" alt="Education vs Income chart from longitudinal project">
+        </a>
+        <div class="content">
+          <h3><a href="Longitudinal.html">Longitudinal Survey — Income, Sociability &amp; Health</a></h3>
+          <p class="meta">Tools: R • Excel/Analytic Solver</p>
+          <p class="desc">Multivariate & logistic models plus data-mining methods to quantify income drivers, sociability,
+            and wellness signals; converted into practical program recommendations.</p>
+          <div class="actions"><a href="Longitudinal.html" class="button">View Project</a></div>
+        </div>
+      </article>
+
+      <!-- 3) NYC Collisions -->
+      <article class="project-card">
+        <a href="NYC.html" class="thumb">
+          <img src="images/nyc_from_notebook_01.png" alt="NYC crashes by hour visualization">
+        </a>
+        <div class="content">
+          <h3><a href="NYC.html">NYC Collisions — Crash Patterns &amp; Risk Signals</a></h3>
+          <p class="meta">Tools: Python (pandas, seaborn, statsmodels) • Folium</p>
+          <p class="desc">When, where, and why crashes happen—hourly peaks, borough hot spots, contributing factors,
+            and seasonality—translated into actions for enforcement and engineering.</p>
+          <div class="actions"><a href="NYC.html" class="button">View Project</a></div>
+        </div>
+      </article>
+
+      <!-- 4) Highest-Paid Athletes -->
+      <article class="project-card">
+        <a href="HighestPaidAthletes.html" class="thumb">
+          <img src="images/sport_share_bar.png" alt="Sport share of athletes’ earnings">
+        </a>
+        <div class="content">
+          <h3><a href="HighestPaidAthletes.html">World’s Highest-Paid Athletes — Tableau</a></h3>
+          <p class="meta">Tools: Tableau Public</p>
+          <p class="desc">Explore on- vs off-field earnings, sport mix, and endorsement-heavy profiles with an
+            interactive dashboard and supporting visuals.</p>
+          <div class="actions"><a href="HighestPaidAthletes.html" class="button">View Dashboard</a></div>
+        </div>
+      </article>
+
+      <!-- 5) Social App Co-Usage -->
+      <article class="project-card">
+        <a href="socialmediausage.html" class="thumb">
+          <img src="images/Rules.SocialMediaUsage.png" alt="Association rules table for social app co-usage">
+        </a>
+        <div class="content">
+          <h3><a href="socialmediausage.html">Social App Co-Usage — Rules &amp; Insights</a></h3>
+          <p class="meta">Tools: R • Excel</p>
+          <p class="desc">Which apps are used together? Transparent association rules (support, confidence, lift)
+            reveal cross-promotion opportunities with lift-ranked pairs.</p>
+          <div class="actions"><a href="socialmediausage.html" class="button">View Project</a></div>
+        </div>
+      </article>
+
+      <!-- 6) Under Armour vs Age -->
+      <article class="project-card">
+        <a href="underarmour.html" class="thumb">
+          <img src="images/ua_prob_vs_age.png" alt="Under Armour purchase probability vs age">
+        </a>
+        <div class="content">
+          <h3><a href="underarmour.html">Under Armour Purchase vs Age</a></h3>
+          <p class="meta">Tools: R • Excel</p>
+          <p class="desc">Linear-probability and logistic models quantify the age-purchase relationship; validated with a
+            holdout split and summarized via accuracy and Brier score.</p>
+          <div class="actions"><a href="underarmour.html" class="button">View Project</a></div>
+        </div>
+      </article>
+
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <section>
+      <form method="post" action="https://formspree.io/f/manjlqlw" class="alt">
+        <div class="fields">
+          <div class="field"><label for="name">Name</label><input type="text" name="name" id="name" /></div>
+          <div class="field"><label for="email">Email</label><input type="text" name="email" id="email" /></div>
+          <div class="field"><label for="message">Message</label><textarea name="message" id="message" rows="3"></textarea></div>
+        </div>
+        <ul class="actions"><li><input type="submit" value="Send Message" /></li></ul>
+      </form>
+    </section>
+    <section class="split contact">
+      <section class="alt"><h3>Address</h3><p>Fort Worth, TX</p></section>
+      <section><h3>Phone</h3><p><a href="tel:+14058375436">+1 (405) 837-5436</a></p></section>
+      <section><h3>Email</h3><p><a href="mailto:optimalbusinessinsights@gmail.com">optimalbusinessinsights@gmail.com</a></p></section>
+      <section><h3>Social</h3>
+        <ul class="icons alt">
+          <li><a href="https://github.com/OBOptics" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+          <li><a href="https://www.linkedin.com/in/annetta-obi-oleru/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+        </ul>
+      </section>
+    </section>
+  </footer>
+
+  <div id="copyright">
+    <ul><li>&copy; OBI</li><li>Company: <a href="https://html5up.net">Optimal Business Insights</a></li></ul>
+  </div>
+</div>
+
+<!-- Scripts (theme) -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
 </html>
+<!--             <figure class="fig" style="max-width:900px;"> -->
+
 
 
