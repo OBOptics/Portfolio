@@ -1,0 +1,211 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>NYC Motor Vehicle Collisions — Tutorial & Findings</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    .post-hero{margin:0 0 1rem}
+    .post-hero img{display:block;max-width:100%;height:auto;border-radius:8px}
+    .byline{font-size:.95rem;color:#777;margin:.25rem 0 .35rem}
+    .byline strong{color:#111}
+    .updated{font-size:.9rem;color:#666;margin-bottom:1rem}
+    .code-link{display:inline-block;padding:.35rem .6rem;border:1px solid #ddd;border-radius:8px;margin:.25rem .35rem 0 0}
+    .outline{background:#fafafa;border:1px solid #eee;border-radius:10px;padding:.85rem 1rem;margin:1rem 0}
+    .outline h4{margin:.1rem 0 .5rem}
+    .outline ol{margin:.25rem 0 0 1.25rem}
+    .fig{margin:1rem 0;text-align:center}
+    .fig img{max-width:100%;height:auto;display:block;margin:0 auto;border-radius:8px}
+    .fig small{display:block;color:#666;margin-top:.35rem}
+    .callout{background:#fff7e6;border:1px solid #ffe2ad;border-radius:10px;padding:.85rem 1rem;margin:1rem 0}
+    .tags{margin-top:1rem}
+    .tag{display:inline-block;background:#f2f2f2;border-radius:999px;padding:.2rem .6rem;margin:.15rem .35rem 0 0;font-size:.9rem}
+    .divider{height:1px;background:#eee;margin:1.25rem 0}
+    pre.code{background:#0f172a;color:#e5e7eb;border-radius:10px;padding:1rem;overflow:auto}
+    .tight li{margin:.25rem 0}
+  </style>
+</head>
+<body>
+<div id="wrapper">
+
+  <header id="header">
+    <a href="index.html" class="logo">OBI</a>
+  </header>
+
+  <div id="main">
+    <section class="post">
+      <!-- HERO -->
+      <div class="post-hero">
+        <img src="images/nyc_from_notebook_03.png" alt="NYC crashes overview">
+      </div>
+
+      <!-- TITLE + META -->
+      <h2>NYC Motor Vehicle Collisions — Tutorial & Findings</h2>
+      <p class="byline"><strong>by: Obi Oleru</strong></p>
+
+      <!-- CODE / DATA LINKS -->
+      <p>
+        <a class="code-link" href="code/TDSP_Python_Project.ipynb" download>Download Notebook (.ipynb)</a>
+        <a class="code-link" href="data/nyc_crashes_sample.csv" download>Download Dataset (CSV)</a>
+      </p>
+
+      <!-- INTRO (kept) -->
+      <p>
+        This tutorial turns a large NYC crash log into decision-ready insights: <strong>when</strong> collisions spike,
+        <strong>where</strong> they cluster across boroughs, and <strong>why</strong> they happen (top contributing factors),
+        plus a daily time-series decomposition to separate trend from seasonality. The goal is to guide the “3 E’s” of safety:
+        <em>enforcement, engineering,</em> and <em>education</em>.
+      </p>
+
+      <!-- WHAT'S INSIDE: 3 items only -->
+      <div class="outline">
+        <h4>What’s inside</h4>
+        <ol>
+          <li><a href="#objective">Purpose / Objective</a></li>
+          <li><a href="#methodology">Methodology</a></li>
+          <li><a href="#takeaways">Key Takeaways</a></li>
+        </ol>
+      </div>
+
+      <!-- 1) PURPOSE / OBJECTIVE -->
+      <h3 id="objective">1) Purpose / Objective</h3>
+      <p class="tight">
+        Use NYC collision records to surface <strong>temporal</strong> (hourly/seasonal), <strong>spatial</strong> (borough & hotspots),
+        and <strong>behavioral</strong> (contributing factors) risk patterns that inform the “3 E’s.”
+        Deliver clear visuals, a reproducible notebook, and concrete next steps for action.
+      </p>
+
+      <!-- 2) METHODOLOGY -->
+      <h3 id="methodology">2) Methodology</h3>
+
+      <!-- Q1 -->
+      <h4 id="q1">Hour-of-Day Profile</h4>
+      <p>
+        Extract <em>Hour of Day</em> from <code>CRASH TIME</code> and aggregate counts. The curve reveals commute peaks
+        and late-night risk windows that inform staffing and messaging.
+      </p>
+      <div class="fig">
+        <img src="images/nyc_from_notebook_04.png" alt="Crashes by hour of day (NYC)">
+        <small>Commuter peaks (AM/PM) and a late-night shoulder.</small>
+      </div>
+      <div class="callout">
+        <strong>Micro-insight:</strong> Prioritize high-visibility enforcement and variable messaging on the top two risk hours per day.
+      </div>
+
+      <!-- Q2 -->
+      <h4 id="q2">Borough Comparison</h4>
+      <p>
+        Tally crashes by <code>BOROUGH</code> to scope relative burden and budget needs. Combining counts with population/vehicle miles
+        would yield rates, but absolute counts already help target engineering work.
+      </p>
+      <div class="fig">
+        <img src="images/nyc_from_notebook_08.png" alt="Crashes by borough">
+        <small>Absolute counts by borough; use rates for equity comparisons.</small>
+      </div>
+      <div class="callout">
+        <strong>Micro-insight:</strong> Focus quick-build safety (signals, daylighting, crossing islands) on the worst corridors within the top borough.
+      </div>
+
+      <!-- Q3 -->
+      <h4 id="q3">Top Contributing Factors</h4>
+      <p>
+        From <code>CONTRIBUTING FACTOR VEHICLE 1</code> rank the most cited causes (with “Unspecified” kept but deprioritized).
+        Distraction/inattention often dominates preventable incidents.
+      </p>
+      <div class="fig">
+        <img src="images/nyc_from_notebook_01.png" alt="Top contributing factors">
+        <small>Driver inattention/distraction is typically #1—prime target for behavior-change campaigns.</small>
+      </div>
+      <div class="callout">
+        <strong>Micro-insight:</strong> Run geo-targeted PSAs and social ads against distraction; measure pre/post factor share.
+      </div>
+
+      <!-- Q4 -->
+      <h4 id="q4">Daily Trend &amp; Seasonality (STL)</h4>
+      <p>
+        Aggregate to daily counts and apply seasonal decomposition (STL). Separate long-run trend, recurring seasonal patterns,
+        and irregular spikes for operational planning.
+      </p>
+      <div class="fig">
+        <img src="images/nyc_from_notebook_06.png" alt="Daily crashes — STL decomposition">
+        <img src="images/nyc_from_notebook_07.png" alt="Daily crashes — STL decomposition">
+        <small>Trend, seasonal, and residual components clarify what’s structural vs transient.</small>
+      </div>
+      <div class="callout">
+        <strong>Micro-insight:</strong> Align staffing to seasonal risk months; treat sudden spikes as incident management, not structural change.
+      </div>
+
+      <!-- Q5 -->
+      <h4 id="q5">Hotspots (Map)</h4>
+      <p>
+        Using <code>LATITUDE</code>/<code>LONGITUDE</code> with Folium, we preview hotspots. The interactive map
+        below is embedded for quick scanning; the full exploration remains in the notebook.
+      </p>
+      <style>
+        .embed-wrap{position:relative;width:100%;padding-top:60%}
+        .embed-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:8px}
+      </style>
+      <div class="embed-wrap">
+        <!-- point this to your deployed file, e.g., /maps/nyc_hotspots.html -->
+        <iframe src="nyc_hotspots.html" title="NYC Collisions — Hotspots"></iframe>
+      </div>
+      <div class="callout" style="margin-top:1rem;">
+        <strong>Micro-insight:</strong> Prioritize top-density intersections for engineering fixes and targeted enforcement.
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 3) KEY TAKEAWAYS -->
+      <h3 id="takeaways">3) Key Takeaways</h3>
+      <p>
+        The crash profile is actionable: <strong>time-bound enforcement</strong> during commute peaks,
+        <strong>borough-focused engineering</strong> for high-density corridors, and
+        <strong>distraction-first education</strong>. Seasonality suggests staffing adjustments by month.
+      </p>
+      <ul class="tight">
+        <li><strong>Immediate:</strong> HVE blitz on top 2 hours/day for 4 weeks; track y/y crash change.</li>
+        <li><strong>Engineering:</strong> Treat the top 10 intersections by density with quick-build measures; compare injury reduction vs controls.</li>
+        <li><strong>Analytics:</strong> Add exposure (traffic volume, weather) for rate-based KPIs; monitor factor-share shifts post-campaign.</li>
+      </ul>
+
+      <!-- TAGS -->
+      <div class="tags">
+        <span class="tag">#python</span>
+        <span class="tag">#pandas</span>
+        <span class="tag">#statsmodels</span>
+        <span class="tag">#data-visualization</span>
+        <span class="tag">#road-safety</span>
+        <span class="tag">#portfolio</span>
+      </div>
+
+      <!-- Back / Share -->
+      <p style="margin-top:1rem;">
+        <a href="index.html" class="code-link">← Back to Portfolio</a>
+        <a class="code-link" target="_blank" rel="noopener"
+           href="https://www.linkedin.com/sharing/share-offsite/?url=https://YOURDOMAIN/nyc_collisions_blog.html">Share on LinkedIn</a>
+      </p>
+    </section>
+  </div>
+
+  <footer id="footer">
+    <section class="split contact">
+      <section class="alt"><h3>Location</h3><p>Fort Worth, TX</p></section>
+      <section><h3>Email</h3><p><a href="mailto:optimalbusinessinsights@gmail.com">optimalbusinessinsights@gmail.com</a></p></section>
+      <section><h3>GitHub</h3><p><a href="https://github.com/OBOptics">OBOptics</a></p></section>
+    </section>
+  </footer>
+
+  <div id="copyright">
+    <ul><li>&copy; OBI</li><li>Theme: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+  </div>
+</div>
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
