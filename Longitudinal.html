@@ -1,0 +1,228 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Longitudinal Survey Insights — Income, Sociability & Health</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <style>
+      .project-snapshot p { margin:.35rem 0; }
+      .tight li { margin:.25rem 0; }
+      .fig { margin:1.25rem 0; text-align:center; }
+      .fig img { max-width:100%; height:auto; display:block; margin:0 auto; border-radius:6px; }
+      .fig small { color:#666; display:block; margin-top:.35rem; }
+      .badge{display:inline-block;padding:.25rem .6rem;border-radius:999px;background:#f2f2f2;margin:.15rem .15rem 0 0}
+      .metric{font-weight:700}
+      .table-wrapper table td,.table-wrapper table th{vertical-align:top}
+      pre.code{background:#0f172a;color:#e5e7eb;border-radius:10px;padding:1rem;overflow:auto}
+      .outline{background:#fafafa;border:1px solid #eee;border-radius:10px;padding:1rem;margin:1.25rem 0}
+      .outline ol{margin:.35rem 0 0 1.25rem}
+      .group h4{margin:.6rem 0 .35rem}
+      .group ul{margin:.25rem 0 .75rem 1.25rem}
+      .group p{margin:.25rem 0 .8rem}
+    </style>
+  </head>
+  <body>
+    <div id="wrapper">
+
+      <!-- Header -->
+      <header id="header">
+        <a href="index.html" class="logo">OBI</a>
+      </header>
+
+      <div id="main">
+        <section>
+
+          <h2>Longitudinal Survey Insights — Income, Sociability &amp; Health</h2>
+          <p><strong>Objective:</strong> Turn a large longitudinal survey into business insights about income drivers, social behavior, and health—then translate findings into actions for workforce, equity, and wellness programs.</p>
+
+          <p>
+            <span class="badge">Tools: R, Excel/Analytic Solver</span>
+            <span class="badge">Methods: Multivariate Regression, Logistic Regression, Classification Tree, K-means</span>
+          </p>
+
+          <!-- What's inside (3 items only) -->
+          <div class="outline">
+            <strong>What’s inside</strong>
+            <ol>
+              <li><a href="#purpose">Purpose / Objective</a></li>
+              <li><a href="#methodology">Methodology</a></li>
+              <li><a href="#takeaways">Key Takeaways</a></li>
+            </ol>
+          </div>
+
+          <!-- =========================
+               PURPOSE / OBJECTIVE
+          ========================== -->
+          <h3 id="purpose">Purpose / Objective</h3>
+          <div class="project-snapshot group">
+            <h4>Executive Summary</h4>
+            <p><strong>Opportunity:</strong> Structural factors (education, race, gender) interact with psychosocial traits (self-esteem, sociability). Organizations can use these insights to design equitable policies, strengthen workforce development, and tailor wellness programs.</p>
+            <p><strong>Approach:</strong> Best-in-class multivariate and logistic models for the regression tasks, plus one supervised and one unsupervised data-mining method for health and segmentation questions.</p>
+            <p><strong>Outcome:</strong> Education is the strongest income driver; gender and racial gaps persist; self-esteem and sociability matter. AUC≈0.598/Accuracy≈76.2% for sociability classification; decision-tree accuracy is inflated by class imbalance; clustering reveals three distinct sub-groups for targeted programs.</p>
+          </div>
+
+          <!-- =========================
+               METHODOLOGY
+          ========================== -->
+          <h3 id="methodology">Methodology</h3>
+
+          <!-- Data Overview -->
+          <div class="project-snapshot group">
+            <h4>Data Overview</h4>
+            <p><strong>Source &amp; scope:</strong> National Longitudinal Survey (NLS), ~12,686 participants; demographics, socioeconomic and health variables.</p>
+            <ul class="tight">
+              <li><strong>Missing values:</strong> 37,123 entries — imputed (median for numeric, mode for categoricals).</li>
+              <li><strong>Outliers:</strong> &gt;3,000 reviewed; plausible values kept; winsorized at 1st/99th and log-transformed where needed.</li>
+              <li><strong>Subset comparisons:</strong> Urban=10,010 vs Non-urban≈2,676; urban mean income ≈ 28,680 vs overall ≈ 28,300; higher variance in urban.</li>
+              <li><strong>Key visual:</strong> Positive linear relationship between education and income across races.</li>
+            </ul>
+
+            <!-- Integrated visual for Data Overview -->
+            <figure class="fig">
+              <img src="images/edu_income_scatter.png" alt="Education vs Income (with linear fit)">
+              <small><strong>Education vs Income.</strong> Clear upward trend: higher education aligns with higher income (linear fit shown).</small>
+            </figure>
+          </div>
+
+          <!-- Modeling Stack -->
+          <div class="project-snapshot group">
+            <h4>Models &amp; Design</h4>
+            <p><strong>Multivariate Regression (Income):</strong> Final model with education, parental education, race, gender, self-esteem, and sociability traits.</p>
+            <p><strong>Logistic Regression (Outgoing Adult):</strong> Demographics + gender-role attitudes + self-esteem.</p>
+            <p><strong>Supervised DM:</strong> Classification tree (interpretable) using core demographics and attitudes.</p>
+            <p><strong>Unsupervised DM:</strong> K-means on standardized features to reveal behavioral/economic segments.</p>
+          </div>
+
+          <!-- =========================
+               KEY TAKEAWAYS
+          ========================== -->
+          <h3 id="takeaways">Key Takeaways</h3>
+
+          <!-- Analysis & Results -->
+          <div class="group">
+            <h4>Income Drivers (Multivariate Regression)</h4>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr><th colspan="3">Multivariate Regression (Income) — Best Model</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>Fit</strong></td><td colspan="2">R² ≈ <span class="metric">0.199</span>; Adj-R² ≈ <span class="metric">0.1982</span>; F = <span class="metric">248.4</span> (p &lt; .001)</td></tr>
+                  <tr><td><strong>Key effects</strong></td><td>Education +4,501.95; Male +11,339.36; Black −5,689.34; Self-Esteem +449.06; Outgoing Kid +1,162.57</td><td>VIF &lt; 3; heteroscedasticity at higher fitted values (consider log-income or robust SE)</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="project-snapshot group">
+            <h4>Sociability (Logistic) — Predictive Signal</h4>
+            <p><strong>Logistic (Outgoing Adult):</strong> AUC <span class="metric">0.598</span>; Accuracy <span class="metric">76.2%</span>. Self-esteem and egalitarian gender-role attitudes improve prediction beyond demographics.</p>
+
+            <figure class="fig">
+              <img src="images/roc_model2_auc0598.png" alt="ROC — Logistic model for Outgoing Adult (AUC 0.598)">
+              <small><strong>ROC — Logistic (Outgoing Adult).</strong> AUC = 0.598 (legend). Features: Age, Male, Education, Income, WomenPlace, Self_Esteem.</small>
+            </figure>
+          </div>
+
+          <div class="group">
+            <h4>Interpretability (Classification Tree)</h4>
+            <div class="table-wrapper">
+              <table>
+                <thead><tr><th colspan="2">Classification Tree (Interpretability-first)</th></tr></thead>
+                <tbody>
+                  <tr><td>Depth</td><td class="metric">3</td></tr>
+                  <tr><td>Notes</td><td>Built on demographics/attitudes for readable splits; accuracy sensitive to class balance.</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <figure class="fig">
+              <img src="images/tree_outgoing.png" alt="Decision Tree — Predicting Outgoing Adult">
+              <small><strong>Decision Tree — Outgoing Adult.</strong> Shallow tree (max depth 3) for clear, explainable rules.</small>
+            </figure>
+          </div>
+
+          <div class="group">
+            <h4>Segments for Action (K-means)</h4>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr><th colspan="6">K-means — Cluster Profiles (k=3)</th></tr>
+                  <tr><th>Cluster</th><th>Income</th><th>Self-Esteem</th><th>Education</th><th>Age</th><th>Weeks Employed</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>64,443.75</td><td>24.80</td><td>15.90</td><td>18.92</td><td>50.52</td></tr>
+                  <tr><td>2</td><td>3,571.82</td><td>21.08</td><td>11.74</td><td>18.77</td><td>4.55</td></tr>
+                  <tr><td>3</td><td>25,905.72</td><td>22.08</td><td>12.05</td><td>19.19</td><td>51.13</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <figure class="fig">
+              <img src="images/cluster_scatter.png" alt="K-means clusters (PCA 2D view)">
+              <small><strong>Respondent Segments — K-means (k=3).</strong> PCA view using Income, Self_Esteem, Education, Age, WeeksEmployed.</small>
+            </figure>
+          </div>
+
+          <div class="group">
+            <h4>Business Impact &amp; Recommendations</h4>
+            <ul class="tight">
+              <li><strong>Invest in education:</strong> Scholarships and vocational training raise earnings potential.</li>
+              <li><strong>Address inequities:</strong> Equity audits and fair-pay practices to close gender/race gaps.</li>
+              <li><strong>Build soft skills:</strong> Mentorship and leadership training to lift self-esteem and sociability.</li>
+              <li><strong>Targeted programs:</strong> Use clusters to tailor interventions by segment needs.</li>
+            </ul>
+          </div>
+
+          <!-- Reproducible R (excerpt) -->
+          <h3>Reproducible R (excerpt)</h3>
+          <pre class="code"><code># --- Load & prep (sketch) ---
+# df &lt;- read.csv("data/longitudinal.csv")
+# Impute NA, winsorize, log-transform income (as needed)
+
+# Multivariate regression (income)
+reg &lt;- lm(Income ~ Educ + MotherEduc + FatherEduc + Race + Gender + SelfEsteem + OutgoingKid + OutgoingAdult, data=df)
+summary(reg)
+
+# Logistic regression (OutgoingAdult = 1/0)
+df$OutgoingAdult &lt;- factor(df$OutgoingAdult, levels=c(0,1))
+logit &lt;- glm(OutgoingAdult ~ Age + Gender + Educ + Income + WomenPlace + SelfEsteem, data=df, family=binomial())
+summary(logit)
+
+# Decision tree (interpretable)
+# library(rpart)
+# tree &lt;- rpart(OutgoingAdult ~ Age + Gender + Educ + Income + WomenPlace + SelfEsteem, data=df, method="class")
+# rpart.plot(tree)
+
+# K-means (standardized)
+# feats &lt;- scale(df[c("Income","SelfEsteem","Educ","Age","WeeksEmployed")])
+# set.seed(42); km &lt;- kmeans(feats, centers=3); aggregate(df[c("Income","SelfEsteem","Educ","Age","WeeksEmployed")], list(km$cluster), mean)
+</code></pre>
+
+        </section>
+      </div>
+
+      <!-- Footer -->
+      <footer id="footer">
+        <section class="split contact">
+          <section class="alt"><h3>Location</h3><p>Fort Worth, TX</p></section>
+          <section><h3>Email</h3><p><a href="mailto:optimalbusinessinsights@gmail.com">optimalbusinessinsights@gmail.com</a></p></section>
+          <section><h3>GitHub</h3><p><a href="https://github.com/OBOptics">OBOptics</a></p></section>
+        </section>
+      </footer>
+
+      <div id="copyright">
+        <ul><li>&copy; OBI</li><li>Theme: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+      </div>
+    </div>
+
+    <!-- Theme scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>
