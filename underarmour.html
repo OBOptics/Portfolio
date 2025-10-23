@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Under Armour Purchase vs Age</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    .outline{background:#fafafa;border:1px solid #eee;border-radius:10px;padding:1rem;margin:1.25rem 0}
+    .outline ol{margin:.25rem 0 0 1.25rem}
+    .fig{max-width:900px;margin:32px auto;text-align:center}
+    .fig img{display:block;margin:0 auto;max-width:50%;height:auto}
+    .fig small{display:block;margin-top:8px;color:#444;line-height:1.45;font-size:.95rem}
+    .tight li{margin:.25rem 0}
+  </style>
+</head>
+<body>
+  <div id="wrapper">
+    <header id="header">
+      <a href="index.html" class="logo">OBI</a>
+    </header>
+
+    <div id="main">
+      <section>
+        <h2>Under Armour Purchase vs Age</h2>
+        <p> Model how customer age relates to Under Armour purchase likelihood, compare a Linear Probability Model (LPM) to Logistic Regression, and validate with a simple holdout.</p>
+        <img src="images/UnderArmour_logo.png" alt="Under Armour logo" style="display:block;margin:0 auto;max-width:100%;height:auto;"/>
+        <p><strong>Tools:</strong> R (readxl, dplyr), Excel</p>
+
+        <!-- What’s inside (3 items only) -->
+        <div class="outline">
+          <strong>What’s inside</strong>
+          <ol>
+            <li><a href="#objective">Purpose / Objective</a></li>
+            <li><a href="#methodology">Methodology</a></li>
+            <li><a href="#takeaways">Key Takeaways</a></li>
+          </ol>
+        </div>
+
+        <!-- 1) Purpose / Objective -->
+        <h3 id="objective">1) Purpose / Objective</h3>
+        <p><strong>Summary:</strong> I modeled how <strong>Age</strong> relates to <strong>Under Armour (UA) purchase likelihood</strong> using a <strong>Linear Probability Model (LPM)</strong> and <strong>Logistic Regression</strong>, then compared out-of-sample performance with a simple holdout split. The analysis quantifies Annabel’s hypothesis that UA skews younger and turns model outputs into clear actions.</p>
+        <h4>Case &amp; Business Question</h4>
+        <p><strong>Brand context:</strong> Under Armour pioneered compression gear. Annabel believes UA resonates with <strong>younger</strong> customers than Nike/Adidas.</p>
+        <p><strong>Business question:</strong> How does the probability of purchasing UA change with age? If younger customers are more likely to purchase, how large is that effect, and which model better predicts purchases?</p>
+
+        <!-- 2) Methodology -->
+        <h3 id="methodology">2) Methodology</h3>
+        <h4>Data Summary</h4>
+        <ul class="tight">
+          <li><strong>Rows:</strong> 30 customers (class exercise)</li>
+          <li><strong>Fields:</strong> <em>Age</em> (numeric, years), <em>Purchase</em> (binary: 1 = purchased UA, 0 = no purchase)</li>
+          <li><strong>Target/Feature:</strong> Target = <em>Purchase</em>; Feature = <em>Age</em></li>
+          <li><strong>Data hygiene:</strong> Purchase coded 0/1; no missing in predictors; ordered split (first 20 = train, last 10 = validation) per instructions.</li>
+        </ul>
+
+        <h4>Models &amp; Validation</h4>
+        <ul class="tight">
+          <li><strong>LPM:</strong> \(P(\text{purchase}) = \beta_0 + \beta_1 \cdot \text{Age}\). Simple slope interpretation; can predict outside [0,1].</li>
+          <li><strong>Logistic:</strong> \(\text{logit}(P) = \beta_0 + \beta_1 \cdot \text{Age}\). Proper probabilities in [0,1]; coefficients map to odds ratios.</li>
+          <li><strong>Holdout:</strong> Ordered <strong>20 train / 10 validation</strong>. Cutoff = <strong>0.50</strong>. Report <strong>Accuracy</strong> and <strong>Brier score</strong> for calibration.</li>
+          <li><strong>Decision rules:</strong> Prefer model with higher accuracy and lower Brier; if LPM yields probs &lt;0 or &gt;1, favor Logistic for deployment.</li>
+        </ul>
+
+        <!-- Visuals (kept as-is) -->
+        <figure class="fig">
+          <img src="images/ua_prob_vs_age.png" alt="Under Armour Purchase vs Age: LPM line, logistic curve, and individual outcomes">
+          <small>
+            Purchase likelihood falls as customers get older. ✕ marks = individual outcomes (1/0).
+            Straight line = <strong>LPM</strong>; curve = <strong>Logistic</strong>. At <strong>age 20</strong>, models estimate
+            <strong>~45–47%</strong> chance; by <strong>age 30</strong>, <strong>~21–25%</strong>; trending toward zero by early 40s.
+          </small>
+        </figure>
+
+        <figure class="fig">
+          <img src="images/ua_validation_metrics.png" alt="Validation metrics: Accuracy and Brier for LPM vs Logistic (n=10)">
+          <small>
+            Validation on the 10-row holdout shows both models at <strong>90% accuracy</strong>.
+            The logistic model is slightly better calibrated with a <strong>lower Brier (0.085 vs 0.086)</strong>.
+          </small>
+        </figure>
+
+        <figure class="fig" style="max-width:900px;">
+          <img src="images/Methods_UA.png" alt="Methods & Rationale: LPM vs Logistic, 20/10 holdout, 0.50 threshold, Brier score, decision rules" style="max-width:50%;">
+          <small><strong>Methods &amp; Rationale.</strong> LPM vs Logistic; 20/10 holdout; 0.50 cutoff; Accuracy + Brier for selection.</small>
+        </figure>
+
+        <figure class="fig" style="max-width:900px;">
+          <img src="images/ua_results_summary.png" alt="Results Summary — Under Armour vs Age (predicted probabilities and validation metrics)" style="max-width:100%;">
+          <small>
+            Predicted probabilities: <strong>LPM</strong> p(20)=<strong>0.446</strong>, p(30)=<strong>0.254</strong> |
+            <strong>Logistic</strong> p(20)=<strong>0.468</strong>, p(30)=<strong>0.208</strong>.
+            Both at <strong>0.900 accuracy</strong> on validation; Logistic slightly better calibrated (Brier <strong>0.085</strong> vs <strong>0.086</strong>).
+          </small>
+        </figure>
+
+        <!-- 3) Key Takeaways -->
+        <h3 id="takeaways">3) Key Takeaways</h3>
+        <ul class="tight">
+          <li><strong>Direction:</strong> Negative age slope in both models → younger customers are more likely to buy UA (supports the hypothesis).</li>
+          <li><strong>Magnitude:</strong> Age 20 vs 30 gap of ~15–25 pts is material for targeting.</li>
+          <li><strong>Model choice:</strong> Logistic is preferred for deployment—probabilities are constrained to [0,1] and slightly better calibrated.</li>
+          <li><strong>Actions:</strong> Prioritize younger segments for UA creatives; use logistic probabilities to score leads (e.g., contact p ≥ 0.60) and track lift by age bands.</li>
+          <li><strong>Limitations:</strong> Small n (30) and single predictor; treat findings as directional. Next, add features (sport category, training frequency) and use cross-validation.</li>
+        </ul>
+
+        <!-- (Optional) Reproducible R excerpt could remain below if you include it on this page -->
+        <!-- Keep your existing R code block if desired -->
+      </section>
+    </div>
+
+    <footer id="footer">
+      <section class="split contact">
+        <section class="alt"><h3>Location</h3><p>Fort Worth, TX</p></section>
+        <section><h3>Email</h3><p><a href="mailto:optimalbusinessinsights@gmail.com">optimalbusinessinsights@gmail.com</a></p></section>
+        <section><h3>GitHub</h3><p><a href="https://github.com/OBOptics">OBOptics</a></p></section>
+      </section>
+    </footer>
+
+    <div id="copyright">
+      <ul><li>&copy; OBI</li><li>Theme: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+    </div>
+  </div>
+</body>
+</html>
+
+ 
+ 
+ 
