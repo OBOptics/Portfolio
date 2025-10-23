@@ -1,0 +1,313 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Mobile Banking App Adoption — Decision Tree (Case 2)</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    .post-hero{margin:0 0 1rem}
+    .post-hero img{display:block;max-width:100%;height:auto;border-radius:8px}
+    .byline{font-size:.95rem;color:#777;margin:.4rem 0 .6rem}
+    .updated{font-size:.9rem;color:#666;margin-bottom:1rem}
+    .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem;margin:1rem 0}
+    .kpi{background:#fff;border:1px solid #eee;border-radius:12px;padding:.8rem 1rem;text-align:center}
+    .kpi .h{font-size:.8rem;color:#666;margin-bottom:.2rem}
+    .kpi .v{font-size:1.15rem;font-weight:700}
+    .outline{background:#fafafa;border:1px solid #eee;border-radius:10px;padding:1rem;margin:1.25rem 0}
+    .outline ol{margin:.35rem 0 0 1.25rem}
+    .fig{margin:1.1rem 0;text-align:center}
+    .fig img{max-width:100%;height:auto;display:block;margin:0 auto;border-radius:8px}
+    .fig small{display:block;color:#666;margin-top:.4rem}
+    .callout{background:#fff7e6;border:1px solid #ffe2ad;border-radius:10px;padding:1rem;margin:1.1rem 0}
+    .note{background:#eef7ff;border:1px solid #cfe5ff;border-radius:10px;padding:1rem;margin:1.1rem 0}
+    .warn{background:#fff1f0;border:1px solid #ffd6d3;border-radius:10px;padding:1rem;margin:1.1rem 0}
+    .divider{height:1px;background:#eee;margin:1.25rem 0}
+    .table-wrapper table td,.table-wrapper table th{vertical-align:top}
+    .badge{display:inline-block;background:#f2f2f2;border-radius:999px;padding:.2rem .6rem;margin:.15rem .35rem 0 0}
+    pre.code{background:#0f172a;color:#e5e7eb;border-radius:10px;padding:1rem;overflow:auto}
+    /* Optional: small spacing tweaks inside grouped sections */
+    .group h4{margin:.6rem 0 .35rem}
+    .group ul{margin:.25rem 0 .75rem 1.25rem}
+    .group p{margin:.25rem 0 .8rem}
+  </style>
+</head>
+<body>
+<div id="wrapper">
+
+  <header id="header">
+    <a href="index.html" class="logo">OBI</a>
+  </header>
+
+  <div id="main">
+    <section class="post">
+
+      <!-- HERO -->
+      <div class="post-hero">
+        <img src="images/mobile_banking_tree.png" alt="Mobile banking — pruned decision tree hero">
+      </div>
+
+      <!-- TITLE + META -->
+      <h2>Mobile Banking App Adoption — Decision Tree (Case Study)</h2>
+      <p class="byline"><strong>Obi Oleru</strong> • Portfolio Case • 8–12 min read</p>
+      <p class="updated">Updated: Aug 2025</p>
+
+      <!-- Quick links -->
+      <p>
+        <a class="badge" href="code/mobile_banking_tree.R" download>Download R Script</a>
+        <a class="badge" href="data/bua6315_mod5_data_mobile_banking.xlsx" download>Dataset (XLSX)</a>
+        <a class="badge" href="outputs/mobile_banking_scores.csv" download>Scores: 20 New Customers</a>
+      </p>
+
+      <!-- TOPLINE KPIs -->
+      <div class="kpis">
+        <div class="kpi"><div class="h">Split</div><div class="v">50/30/20</div></div>
+        <div class="kpi"><div class="h">Seed</div><div class="v">12345</div></div>
+        <div class="kpi"><div class="h">Model</div><div class="v">Pruned Tree (Gini)</div></div>
+        <div class="kpi"><div class="h">Deliverables</div><div class="v">ROC, Confusion, Scores</div></div>
+      </div>
+
+      <!-- INTRO / WHY -->
+      <p>
+        Sunnyville Bank is rolling out a mobile app and wants to identify customers most likely to adopt it. That lets the
+        bank prioritize its marketing spend (email/SMS in-app prompts), optimize onboarding, and measure conversion lift.
+        This project builds a clear, explainable <strong>classification tree</strong> and evaluates it out-of-sample. The end product is a
+        scored list of customers with adoption probabilities so Marketing can run a top-N campaign, and Ops can prepare
+        branch staff for a channel shift.
+      </p>
+
+      <!-- WHAT'S INSIDE (3 items only) -->
+      <div class="outline">
+        <strong>What’s inside</strong>
+        <ol>
+          <li><a href="#purpose">Purpose / Objective</a></li>
+          <li><a href="#methodology">Methodology</a></li>
+          <li><a href="#takeaways">Key Takeaways</a></li>
+        </ol>
+      </div>
+
+      <!-- =========================
+           PURPOSE / OBJECTIVE
+      ========================== -->
+      <h3 id="purpose">Purpose / Objective</h3>
+      <div class="group">
+        <p>
+          Increase mobile app adoption by ranking customers on likelihood to download and creating a simple,
+          explainable model that produces a <em>targetable list</em> for marketing. Because the cost of a false positive
+          (outreach to a non-adopter) is low versus the benefit of a new digital user, we emphasize
+          <strong>recall</strong> and <strong>ranking quality (AUC)</strong> over a single-threshold accuracy.
+        </p>
+
+        <!-- Business framing & success criteria merged here -->
+        <h4>Business framing &amp; success criteria</h4>
+        <p>
+          A good solution should (1) <strong>rank</strong> customers accurately by adoption likelihood, (2) be
+          <strong>explainable</strong> for Marketing &amp; Compliance, and (3) output a <strong>targetable list</strong> with
+          measurable ROI (CPA/LTV). We report ROC/AUC for ranking quality and provide probabilities for
+          top-N outreach instead of relying on a single cutoff.
+        </p>
+      </div>
+
+      <!-- =========================
+           METHODOLOGY
+      ========================== -->
+      <h3 id="methodology">Methodology</h3>
+      <div class="group">
+        <!-- Data & assumptions -->
+        <h4>Data &amp; assumptions</h4>
+        <p><strong>Labeled set:</strong> 500 customers. <strong>Scoring set:</strong> 20 new customers.</p>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Field</th><th>Type</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>App</td><td>Target (0/1)</td><td>Downloaded the mobile app (1) or not (0)</td></tr>
+              <tr><td>Age</td><td>Numeric</td><td>Years</td></tr>
+              <tr><td>Gender</td><td>Categorical</td><td>Male / Female</td></tr>
+              <tr><td>Edu</td><td>Ordered factor</td><td>Education level (1 &lt; 2 &lt; 3)</td></tr>
+              <tr><td>Income</td><td>Numeric</td><td>In $1,000s</td></tr>
+              <tr><td>CD</td><td>Categorical</td><td>Certificate of Deposit (Y/N)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note">
+          <strong>Protocol from the case:</strong> Partition 50% / 30% / 20% (Train / Validation / Test) using seed
+          <code>12345</code>. Treat character fields as categorical; numerical otherwise.
+        </div>
+
+        <!-- EDA & preprocessing -->
+        <h4>EDA &amp; preprocessing</h4>
+        <ul>
+          <li><strong>Missingness &amp; types:</strong> No critical missing fields; coerced <code>Gender</code>, <code>Edu</code>, and <code>CD</code> to factors (ordered for <code>Edu</code>).</li>
+          <li><strong>Leakage check:</strong> No post-outcome features; all predictors are pre-adoption attributes.</li>
+          <li><strong>Class balance:</strong> Positive rate is non-trivial; on the test set the pruned tree tended to over-predict “download,” suggesting probability ranking or reweighting.</li>
+          <li><strong>Signals:</strong> CD and higher income increase adoption propensity; age trends slightly negative.</li>
+        </ul>
+
+        <!-- Modeling approach -->
+        <h4>Modeling approach</h4>
+        <p>
+          Trained a <strong>classification tree</strong> (rpart, Gini) on the training split, selected the <strong>complexity parameter (cp)</strong>
+          by maximizing validation AUC, and <strong>pruned</strong> to avoid overfitting. Final metrics are reported on the untouched test set
+          at a 0.50 cutoff. A logistic baseline was also considered; the tree was selected for transparency and segment-friendly rules.
+        </p>
+        <ul>
+          <li><strong>Why a tree?</strong> Readable rules (e.g., “If CD=Yes and Income ≥ X…”) help Marketing &amp; Compliance.</li>
+          <li><strong>Hyperparameters:</strong> Gini; cp grid from <code>cptable</code>; <code>minsplit=10</code>.</li>
+          <li><strong>Outputs:</strong> Probabilities for ranking and ROC; avoid overreliance on a single cutoff.</li>
+        </ul>
+      </div>
+
+      <!-- =========================
+           KEY TAKEAWAYS
+      ========================== -->
+      <h3 id="takeaways">Key Takeaways</h3>
+      <div class="group">
+        <!-- Performance & threshold -->
+        <h4>Performance (test set) &amp; threshold strategy</h4>
+        <div class="callout">
+          <p style="margin:.25rem 0;"><strong>Test @0.50:</strong> Accuracy <strong>0.45</strong>, Specificity <strong>0.00</strong>, Sensitivity <strong>1.00</strong>, Precision <strong>0.45</strong>.</p>
+          <p style="margin:.25rem 0;">The tree classifies nearly everyone as “download.” Use <strong>probability ranking (top-N)</strong> or move the threshold upward / add class weights to trade recall for precision.</p>
+        </div>
+        <div class="fig">
+          <img src="images/mobile_banking_roc.png" alt="ROC curve for the pruned tree (test set)">
+          <small>ROC shows ranking quality across thresholds. Pick an operating point that matches budget &amp; CPA goals.</small>
+        </div>
+
+        <!-- Interpreting the tree -->
+        <h4>Interpreting the tree</h4>
+        <div class="fig">
+          <img src="images/mobile_banking_tree.png" alt="Pruned decision tree (schematic)">
+          <small>Root split on CD; subsequent splits on Age and Income.</small>
+        </div>
+        <ul>
+          <li><strong>CD at the root:</strong> Engaged customers are more receptive to new features.</li>
+          <li><strong>Income:</strong> Higher income among CD holders boosts adoption likelihood.</li>
+          <li><strong>Age:</strong> Younger non-CD segments are more likely to try the app—tailor onboarding.</li>
+        </ul>
+
+        <!-- Scoring & policy -->
+        <h4>Scoring 20 new customers &amp; targeting policy</h4>
+        <p>
+          The best-pruned tree scored 20 new customers. At a 0.50 cutoff, <strong>all 20 are predicted to download</strong> (e.g., first customer ≈ <strong>0.532</strong>).
+          Rather than treating this as binary, rank by probability and select a top-X% band to fit campaign budget.
+        </p>
+        <div class="callout">
+          <strong>Targeting policy:</strong>
+          <ol>
+            <li>Sort customers by predicted probability (descending).</li>
+            <li>Pick a top-N (or cutoff) that matches budget and expected CPA/LTV.</li>
+            <li>Message CD holders with feature-led creative (mobile deposit, alerts, Zelle).</li>
+            <li>For younger, non-CD high-probability customers, emphasize convenience and security.</li>
+          </ol>
+        </div>
+
+        <!-- Risks & limitations -->
+        <h4>Risks, ethics, &amp; limitations</h4>
+        <ul>
+          <li><strong>Fairness &amp; compliance:</strong> Avoid protected attributes; ensure any age usage is appropriate.</li>
+          <li><strong>Data drift:</strong> Propensity changes—monitor and retrain periodically.</li>
+          <li><strong>Imbalance:</strong> If many are near-positive, trees may over-predict; consider class weights.</li>
+          <li><strong>Small sample risk:</strong> With 500 rows, trees can be unstable—validate rigorously.</li>
+        </ul>
+
+        <!-- Next steps -->
+        <h4>Next steps &amp; model roadmap</h4>
+        <ul>
+          <li><strong>Cost-sensitive tree:</strong> Penalize false negatives if missed adopters are costly.</li>
+          <li><strong>Logistic + regularization:</strong> Calibrated baseline; compare AUC/PR.</li>
+          <li><strong>Ensembles (RF/GBM):</strong> Test for lift; keep tree for explainability.</li>
+          <li><strong>Calibration:</strong> Isotonic/Platt for better probability ranking.</li>
+          <li><strong>Features:</strong> Tenure, digital history (e-statements), product depth, branch distance.</li>
+        </ul>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- APPENDIX -->
+      <h3 id="appendix">Appendix — Reproducible R (excerpt)</h3>
+      <p>Full script includes split, training, pruning via validation AUC, test evaluation, ROC export, and scoring of 20 new customers.</p>
+      <pre class="code"><code># Packages
+library(readxl); library(dplyr); library(rpart); library(pROC)
+
+# Load & prep
+df    &lt;- read_excel("data/bua6315_mod5_data_mobile_banking.xlsx", sheet=1)
+new20 &lt;- tryCatch(read_excel("data/bua6315_mod5_data_mobile_banking.xlsx", sheet=2), error=function(e) NULL)
+
+df &lt;- df %&gt;% mutate(Gender=factor(Gender), Edu=factor(Edu, ordered=TRUE), CD=factor(CD), App=factor(App, levels=c(0,1)))
+
+# Split 50/30/20 (seed=12345)
+set.seed(12345); n &lt;- nrow(df); idx &lt;- sample.int(n, n)
+n_tr &lt;- floor(.5*n); n_val &lt;- floor(.3*n)
+tr &lt;- df[idx[1:n_tr], ]; val &lt;- df[idx[(n_tr+1):(n_tr+n_val)], ]; te &lt;- df[idx[(n_tr+n_val+1):n], ]
+
+# Train wide tree then prune by validation AUC
+fit &lt;- rpart(App ~ Age+Gender+Edu+Income+CD, data=tr, method="class",
+             control=rpart.control(cp=.001, minsplit=10, xval=10))
+cps &lt;- fit$cptable[, "CP"]
+auc_by_cp &lt;- sapply(cps, function(cp){
+  pr &lt;- predict(prune(fit, cp=cp), newdata=val, type="prob")[, "1"]
+  roc(response=val$App, predictor=pr, levels=c("0","1"), direction="&lt;")$auc
+})
+best_cp &lt;- cps[which.max(auc_by_cp)]
+tree   &lt;- prune(fit, cp=best_cp)
+
+# Test metrics @0.50
+p_te &lt;- predict(tree, newdata=te, type="prob")[, "1"]
+y    &lt;- te$App
+yhat &lt;- ifelse(p_te &gt;= .50, "1", "0")
+acc  &lt;- mean(yhat==y)
+spec &lt;- with(table(y, yhat), ifelse(("0" %in% rownames(.) &amp; "1" %in% colnames(.)),
+         .["0","0"]/(.["0","0"]+.["0","1"]), NA))
+sens &lt;- with(table(y, yhat), ifelse(("1" %in% rownames(.) &amp; "1" %in% colnames(.)),
+         .["1","1"]/(.["1","1"]+.["1","0"]), NA))
+prec &lt;- with(table(y, yhat), ifelse(("1" %in% rownames(.) &amp; "1" %in% colnames(.)),
+         .["1","1"]/(.["1","1"]+.["0","1"]), NA))
+cat(sprintf("TEST — Acc=%.3f Spec=%.3f Sens=%.3f Prec=%.3f\n", acc, spec, sens, prec))
+
+# ROC / AUC
+auc_te &lt;- as.numeric(roc(y, p_te, levels=c("0","1"), direction="&lt;")$auc)
+cat(sprintf("TEST — AUC=%.3f\n", auc_te))
+
+# Score 20 new
+if (!is.null(new20)) {
+  new20 &lt;- new20 %&gt;% mutate(Gender=factor(Gender, levels=levels(df$Gender)),
+                             Edu=factor(Edu, ordered=TRUE, levels=levels(df$Edu)),
+                             CD=factor(CD, levels=levels(df$CD)))
+  p_new &lt;- predict(tree, newdata=new20, type="prob")[, "1"]
+  class  &lt;- ifelse(p_new &gt;= .50, 1, 0)
+  scored &lt;- cbind(new20, prob_app=round(p_new,3), predict_app=class)
+  write.csv(scored, "outputs/mobile_banking_scores.csv", row.names=FALSE)
+}
+</code></pre>
+
+      <p style="margin-top:.75rem;">
+        <a class="badge" href="index.html">← Back to Portfolio</a>
+        <a class="badge" href="outputs/mobile_banking_scores.csv" download>Download Scores CSV</a>
+      </p>
+
+    </section>
+  </div>
+
+  <footer id="footer">
+    <section class="split contact">
+      <section class="alt"><h3>Location</h3><p>Fort Worth, TX</p></section>
+      <section><h3>Email</h3><p><a href="mailto:optimalbusinessinsights@gmail.com">optimalbusinessinsights@gmail.com</a></p></section>
+      <section><h3>GitHub</h3><p><a href="https://github.com/OBOptics">OBOptics</a></p></section>
+    </section>
+  </footer>
+
+  <div id="copyright">
+    <ul><li>&copy; OBI</li><li>Theme: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+  </div>
+</div>
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
+
+
